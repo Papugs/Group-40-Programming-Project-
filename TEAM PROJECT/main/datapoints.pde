@@ -1,9 +1,20 @@
 class Datapoints {
+  String[] data;
 
   Datapoints(String flight) {
-    String[] data = flight.split(",");
+    data = flight.split(",");
 
   }
+  
+  String toString() {
+    String s = "";
+    
+    for(String ds : data) {
+      s = s + ds + " ";
+      
+    }
+    return s;
+  }  
 }
 /*
  FL_DATE,

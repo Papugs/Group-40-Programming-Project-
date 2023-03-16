@@ -1,41 +1,33 @@
-final static int SCREENX = 400;
-final static int SCREENY = 400;
-
+String[] flights2k;
+ArrayList<Datapoints> datapointlist;
 
 void settings() {
    size(SCREENX, SCREENY);
 }
 
 void setup() {
-   String[] flightsFull = loadStrings("flights_full.csv");
-   String[] flights100k = loadStrings("flights100k.csv");
-   String[] flights10k = loadStrings("flights10k.csv");
-   String[] flights2k = loadStrings("flights2k.csv");
-  ArrayList<String> datapointlist= new ArrayList<>();
+   PFont stdFont = loadFont("Verdana-24.vlw");
+   textFont(stdFont);
+   background(255);
+   //String[] flightsFull = loadStrings("flights_full.csv");
+   //String[] flights100k = loadStrings("flights100k.csv");
+   //String[] flights10k = loadStrings("flights10k.csv");
+   flights2k = loadStrings("flights2k.csv");
+   datapointlist= new ArrayList<>();
+   for(int i = 1; i<= 10; i++) {
+     datapointlist.add(new Datapoints(flights2k[i]));
+   }
+
+  for(Datapoints dp : datapointlist) {
+    println(dp.toString());
+  }
   
 }
 
 void draw() {
-
-
+  fill(0);
+  for(int i = 0; i<datapointlist.size(); i++) {
+    text(datapointlist.get(i).toString(), 10, 25+i*(SCREENY/datapointlist.size()));
+  }
+  
 }
-/*
-FL_DATE,
-MKT_CARRIER, (MKT = MARKET)
-MKT_CARRIER_FL_NUM,
-ORIGIN,
-ORIGIN_CITY_NAME,
-ORIGIN_STATE_ABR, (ABR = abreviation)
-ORIGIN_WAC, (WAC = World Area Code)
-DEST,
-DEST_CITY_NAME,
-DEST_STATE_ABR,
-DEST_WAC,
-CRS_DEP_TIME, (CRS = Common reporting standard / actual)
-DEP_TIME,
-CRS_ARR_TIME,
-ARR_TIME,
-CANCELLED,
-DIVERTED, (other arrival airport than scheduled)
-DISTANCE
-*/
