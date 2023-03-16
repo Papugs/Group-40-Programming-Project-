@@ -2,6 +2,7 @@ class Datapoints {
 
   Datapoints(String flight) {
     String[] data = flight.split(",");
+
   }
 }
 /*

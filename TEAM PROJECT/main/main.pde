@@ -11,12 +11,14 @@ void setup() {
    String[] flights100k = loadStrings("flights100k.csv");
    String[] flights10k = loadStrings("flights10k.csv");
    String[] flights2k = loadStrings("flights2k.csv");
+  ArrayList<String> datapointlist= new ArrayList<>();
+  
 }
 
 void draw() {
-    
-}
 
+
+}
 /*
 FL_DATE,
 MKT_CARRIER, (MKT = MARKET)
