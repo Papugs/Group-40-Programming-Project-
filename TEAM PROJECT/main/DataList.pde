@@ -1,5 +1,5 @@
 class DataList {
-  ArrayList<Datapoints> datapointlist;
+  ArrayList<DataPoint> datapointlist;
   
   public DataList() {
     datapointlist= new ArrayList<>();
@@ -7,12 +7,12 @@ class DataList {
   
   public void populateList(String[] CSVData) {
      for(String s : CSVData) {
-       datapointlist.add(new Datapoints(s));
+       datapointlist.add(new DataPoint(s));
      }
   }
   
   public void printAll() {
-    for(Datapoints dp : datapointlist) {
+    for(DataPoint dp : datapointlist) {
       println(dp.toString());
     }
   }
