@@ -1,5 +1,5 @@
 String[] flights2k;
-ArrayList<Datapoints> datapointlist;
+ArrayList<DataPoint> datapointlist;
 
 void settings() {
    size(SCREENX, SCREENY);
@@ -15,10 +15,10 @@ void setup() {
    flights2k = loadStrings("flights2k.csv");
    datapointlist= new ArrayList<>();
    for(int i = 1; i<= 10; i++) {
-     datapointlist.add(new Datapoints(flights2k[i]));
+     datapointlist.add(new DataPoint(flights2k[i]));
    }
 
-  for(Datapoints dp : datapointlist) {
+  for(DataPoint dp : datapointlist) {
     println(dp.toString());
   }
   
