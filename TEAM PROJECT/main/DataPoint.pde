@@ -1,7 +1,7 @@
-class Datapoints {
+class DataPoint {
   String[] data;
 
-  Datapoints(String flight) {
+  DataPoint(String flight) {
     data = flight.split(",");
 
   }

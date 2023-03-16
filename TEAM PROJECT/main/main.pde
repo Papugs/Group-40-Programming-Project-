@@ -1,5 +1,7 @@
 String[] flights2k;
+
 DataList data;
+
 
 void settings() {
    size(SCREENX, SCREENY);
@@ -13,8 +15,10 @@ void setup() {
    //String[] flights100k = loadStrings("flights100k.csv");
    //String[] flights10k = loadStrings("flights10k.csv");
    flights2k = loadStrings("flights2k.csv");
+
    data = new DataList();
    data.populateList(flights2k);
+
 
 
   
