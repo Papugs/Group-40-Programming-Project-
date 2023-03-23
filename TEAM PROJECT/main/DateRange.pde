@@ -43,7 +43,6 @@ class DateRange {
     widgetList.get(0).draw();
     // to box
     widgetList.get(1).draw();
-
     // search box
     widgetList.get(2).draw();
   }
@@ -61,6 +60,7 @@ class DateRange {
       index = i;
       if (event != 0) break;
     }
+    println(event);
     switch (event) {
     default:
       break;
@@ -75,24 +75,31 @@ class DateRange {
   void mouseMoved() {
     int event = 0;
     int index = 0;
+    int iCal = 0;
     for (int i=0; i<widgetList.size(); i++) {
       event = widgetList.get(i).getEvent(mouseX, mouseY);
       index = i;
       if (event != 0) break;
+      if (event == 0) {
+        for (int ii=0; ii<widgetList.get(0).daysArray.size(); ii++) {
+          event = widgetList.get(0).daysArray.get(ii).getEvent(mouseX, mouseY);
+          index = ii; 
+          iCal = 0;
+          if (event == 0) widgetList.get(iCal).daysArray.get(index).highlight = false;
+          else break;
+        }
+      }
+      if (event == 0) {
+        for (int ii=0; ii<widgetList.get(1).daysArray.size(); ii++) {
+          event = widgetList.get(1).daysArray.get(ii).getEvent(mouseX, mouseY);
+          index = ii;
+          iCal = 1;
+          if (event != 0) break;
+        }
+      }
     }
-    switch (event) {
-    default:
-      break;
-    case 1:
-    case 2:
-      // widgetList.get(index).openCalendar();
-      break;
-    case 3:
-      //dataList.getFlightByDateRange()
-      break;
-    case 4:
-    case 5:
-      widgetList.get(index).highlight();
+    if (event >= 4 && event <= 35) {
+      widgetList.get(iCal).daysArray.get(index).highlight();
     }
   }
   void mouseWheel() {

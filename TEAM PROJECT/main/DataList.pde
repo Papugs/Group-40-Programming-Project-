@@ -32,7 +32,7 @@ class DataList {
     String[] date;
 
     for (int i = 1; i<datapointlist.size(); i++) {
-      date = (datapointlist.get(i).getDataPointElement(dateListIndex)).split("/");
+      date = (datapointlist.get(i).getData(dateListIndex)).split("/");
       date[year] = date[year].replace(time, "");
       if (int(date[year]) >= int(startDate[year])   &&
         int(date[year]) <= int(endDate[year])       &&

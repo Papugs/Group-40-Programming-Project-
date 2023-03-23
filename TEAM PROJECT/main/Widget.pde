@@ -4,7 +4,8 @@ class Widget {
   public color widgetColor, labelColor;
   public PFont widgetFont;
   public boolean openCalendar;
-  boolean highlight;
+  public boolean highlight;
+  public ArrayList<Widget> daysArray;
 
   Widget(int x, int y, int width, int height, String label, color widgetColor, PFont widgetFont, int event) {
     this.x=x;
@@ -38,7 +39,7 @@ class Widget {
     if (openCalendar) openCalendar = false;
     else openCalendar = true;
   }
-  void highlight() {
+  void highlight () {
     highlight = true;
   }
 }
@@ -48,11 +49,12 @@ class DatePicker extends Widget {
   String endDate;
   int month;
   int year;
+  int ellipseRadius;
+  int xD, yD;
   PImage arrowLeft;
   PImage arrowRight;
   PImage calendarIcon;
   PImage januaryCal;
-  ArrayList<Day> daysArray;
 
   DatePicker(int x, int y, int width, int height, String label, color widgetColor, PFont widgetFont, int event) {
     super(x, y, width, height, label, widgetColor, widgetFont, event);
@@ -72,18 +74,17 @@ class DatePicker extends Widget {
     januaryCal.resize(200, 150);
     arrowLeft.resize(10, 10);
     arrowRight.resize(10, 10);
-    daysArray = new ArrayList<Day>();
-    int xD = ;
-    int xY = y;
-    int i = 1;
-    while (i <= 31) {
-      daysArray.add(new Day(xD, xY, i, width, height, label, widgetColor, widgetFont, i+3));
-      xD += 20;
-      if (xD >= x + 40) {
-        xD = x -100 ;
-        xY += 20;
+    daysArray = new ArrayList<Widget>();
+    ellipseRadius = 30;
+    xD = x + width+(6*35);
+    yD = y+height+60;
+    for (int i=1; i<=31; i++) {
+      daysArray.add(new Day(xD, yD, ellipseRadius, ellipseRadius, str(i), widgetColor, widgetFont, i+3));
+      xD += 35;
+      if (xD >= x +width + (35*8)) {
+        xD = x+width+35;
+        yD += 35;
       }
-      i++;
     }
   }
   void draw () {
@@ -102,36 +103,34 @@ class DatePicker extends Widget {
     popStyle();
     // calendar icon button
     image(calendarIcon, width+5, 0);
+    popMatrix();
     if (super.openCalendar) {
+      fill(220);
+      rect(x+width+5, y+height+10, 270, 250, 10);
       for (int i=0; i<daysArray.size(); i++) {
         daysArray.get(i).draw();
       }
     }
-    popMatrix();
   }
 }
 
 class Day extends Widget {
-  int ellipseRadius = 20;
-  int day;
 
-  Day(int x, int y, int day, int width, int height, String label, color widgetColor, PFont widgetFont, int event) {
+  Day(int x, int y, int width, int height, String label, color widgetColor, PFont widgetFont, int event) {
     super(x, y, width, height, label, widgetColor, widgetFont, event);
-    this.day = day;
   }
 
   void draw() {
-    pushMatrix();
     pushStyle();
-    fill (0, 30, 180);
+    fill (255);
     if (super.highlight) {
-      fill (200);
+      fill (150);
     }
-    ellipse(x, y, ellipseRadius, ellipseRadius);
+    ellipseMode(CORNER);
+    ellipse(x-width/2, y-height/2, width, height);
     fill(0);
     textSize(10);
-    text(day, x+3, y+3);
+    text(label, x+textDescent(), y+3);
     popStyle();
-    popMatrix();
   }
 }

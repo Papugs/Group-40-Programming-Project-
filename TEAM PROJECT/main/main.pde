@@ -34,7 +34,7 @@ void draw() {
   }
 }
 void mousePressed() {
-    dateRange.mousePressed();
+  dateRange.mousePressed();
 }
 void mouseMoved() {
   dateRange.mouseMoved();
