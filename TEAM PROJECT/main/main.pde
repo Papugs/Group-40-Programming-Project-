@@ -19,9 +19,6 @@ void setup() {
    data = new DataList();
    data.populateList(flights2k);
    
-   DataList dl = data.getFlightByAirport("JFK");
-   dl.getFlightByLateness(5).printAll();
-
 
 
   
