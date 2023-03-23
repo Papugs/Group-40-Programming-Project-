@@ -3,6 +3,7 @@ String[] flights2k;
 DataList data;
 DateRange dateRange;
 int screen;
+Bargraph bg;
 
 void settings() {
   size(SCREENX, SCREENY);
@@ -20,13 +21,18 @@ void setup() {
   data = new DataList();
   data.populateList(flights2k);
   dateRange = new DateRange();
-  screen = 2;
+  screen = 1;
+  
+  int JFKFlights = data.getFlightByAirport("JFK").getFlightByLateness(5).getSize();
+  int MDWFLights = data.getFlightByAirport("MDW").getFlightByLateness(5).getSize();
+  
+  bg = new Bargraph(this);
 }
 
 void draw() {
   switch (screen) {
   case 1:
-    data.draw();
+    bg.draw();
     break;
   case 2:
     dateRange.draw();

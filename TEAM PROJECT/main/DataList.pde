@@ -95,6 +95,10 @@ class DataList {
     return new DataList(lateflights);
   }
   
+  public int getSize() {
+    return datapointlist.size();
+  }
+  
   
   
 }
