@@ -5,6 +5,9 @@ class DataPoint {
     data = flight.split(",");
 
   }
+  String getData (int index) {
+    return data[index];
+  }
   
   String toString() {
     String s = "";
