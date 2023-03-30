@@ -27,12 +27,11 @@ class DataList {
     String[] startDate = startD.split("/");
     String[] endDate = endD.split("/");
     String time = " 00:00";
-    int year=2, month=1, day=0, dateListIndex = 0;
+    int year=2, month=0, day=1, dateListIndex = 0;
     ArrayList<DataPoint> datesWithinRange = new ArrayList<>();
     String[] date;
-
-    for (int i = 1; i<datapointlist.size(); i++) {
-      date = (datapointlist.get(i).getData(dateListIndex)).split("/");
+    for (int i = 1; i<data.datapointlist.size(); i++) {
+      date = (data.datapointlist.get(i).getData(dateListIndex)).split("/");
       date[year] = date[year].replace(time, "");
       if (int(date[year]) >= int(startDate[year])   &&
         int(date[year]) <= int(endDate[year])       &&
@@ -41,7 +40,7 @@ class DataList {
         int(date[day]) >= int(startDate[day])       &&
         int(date[day]) <= int(endDate[day]))
       {
-        datesWithinRange.add(datapointlist.get(i));
+        datesWithinRange.add(data.datapointlist.get(i));
       }
     }
     String [] datesList = new String[datesWithinRange.size()];
