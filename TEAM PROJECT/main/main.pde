@@ -4,7 +4,7 @@ DataList data;
 DateRange dateRange;
 int screen;
 Bargraph bg;
-BarChart bc;
+BarCharts bc;
 
 void settings() {
   size(SCREENX, SCREENY);
@@ -24,15 +24,8 @@ void setup() {
   dateRange = new DateRange();
   screen = 3;
   
-  
-  String[] f = {"JFK", "MDW", "LAX", "DCA", "SEA", "FLL"};
-  int[] ff = new int[f.length];
-  
-  for(int i = 0; i<f.length;i++) {
-    ff[i] = data.getFlightByAirport(f[i]).getFlightByLateness(5).getSize();
-  }
-  
-  bc = new BarChart(100, 100, 1000, 400, f, ff, "Late flights by airport");
+  bc = new BarCharts(this);
+
   bg = new Bargraph(this);
   
 
