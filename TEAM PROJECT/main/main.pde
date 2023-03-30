@@ -3,6 +3,8 @@ String[] flights2k;
 DataList data;
 DateRange dateRange;
 int screen;
+Bargraph bg;
+BarChart bc;
 
 void settings() {
   size(SCREENX, SCREENY);
@@ -20,16 +22,30 @@ void setup() {
   data = new DataList();
   data.populateList(flights2k);
   dateRange = new DateRange();
-  screen = 2;
+  screen = 3;
+  
+  
+  String[] f = {"JFK", "MDW", "LAX", "DCA"};
+  int[] ff = new int[f.length];
+  
+  for(int i = 0; i<f.length;i++) {
+    ff[i] = data.getFlightByAirport(f[i]).getFlightByLateness(5).getSize();
+  }
+  
+  bc = new BarChart(50, 50, 200, 150, f, ff, "Late flights by airport");
+  bg = new Bargraph(this);
 }
 
 void draw() {
   switch (screen) {
   case 1:
-    data.draw();
+    bg.draw();
     break;
   case 2:
     dateRange.draw();
+    break;
+  case 3:
+    bc.draw();
     break;
   }
 }
