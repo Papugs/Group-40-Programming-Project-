@@ -21,14 +21,16 @@ public class BarChart {
    }
    
    public void draw() {
-     fill(100);
+     
      for(int i = 0; i<size; i++) {
+       fill(0, 55, 200);
        int offset = i*(h/size);
        rect(x, y+offset, (w*0.7*((float) values[i]/ (float) max)), (h/size)*.8);
+       fill(100);
        textAlign(LEFT);
        text(labels[i] + "-" + values[i], x+(w*0.75*((float)values[i]/ (float) max)), (y+offset)+(((float) h/ (float) size)*0.65));
        textAlign(CENTER);  
-       text(title, x+((float) w / 2.0), (y+h)*1.25);
+       text(title, x+((float) w / 2.0), (y+h)+10);
        textAlign(LEFT);
    }
    }

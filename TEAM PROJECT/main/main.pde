@@ -25,15 +25,17 @@ void setup() {
   screen = 3;
   
   
-  String[] f = {"JFK", "MDW", "LAX", "DCA"};
+  String[] f = {"JFK", "MDW", "LAX", "DCA", "SEA", "FLL"};
   int[] ff = new int[f.length];
   
   for(int i = 0; i<f.length;i++) {
     ff[i] = data.getFlightByAirport(f[i]).getFlightByLateness(5).getSize();
   }
   
-  bc = new BarChart(50, 50, 200, 150, f, ff, "Late flights by airport");
+  bc = new BarChart(100, 100, 1000, 400, f, ff, "Late flights by airport");
   bg = new Bargraph(this);
+  
+
 }
 
 void draw() {
@@ -47,7 +49,7 @@ void draw() {
   case 3:
     bc.draw();
     break;
-  }
+  } 
 }
 void mousePressed() {
   dateRange.mousePressed();
