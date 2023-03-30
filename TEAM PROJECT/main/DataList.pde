@@ -95,6 +95,26 @@ class DataList {
     return new DataList(lateflights);
   }
   
+  public DataList getFlightByDestination(String airportName) {
+    ArrayList<DataPoint> airportFlights = new ArrayList<DataPoint>();
+    for(DataPoint dp : datapointlist) {
+      if(dp.getData(7).compareTo(airportName) == 0){
+        airportFlights.add(dp);
+      }  
+    }
+    return new DataList(airportFlights);
+  }
+  
+  public DataList getFlightByMarketCarrier(String marketCarrier) {
+    ArrayList<DataPoint> carrierFlights = new ArrayList<DataPoint>();
+    for(DataPoint dp : datapointlist) {
+      if(dp.getData(1).compareTo(marketCarrier) == 0){
+        carrierFlights.add(dp);
+      }  
+    }
+    return new DataList(carrierFlights);
+  }
+  
   public int getSize() {
     return datapointlist.size();
   }
