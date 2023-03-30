@@ -13,7 +13,7 @@ class DataPoint {
     String s = "";
     
     for(String ds : data) {
-      s = s + ds + " ";
+      s = s + ds + ", ";
       
     }
     return s;
