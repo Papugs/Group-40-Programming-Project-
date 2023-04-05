@@ -207,3 +207,57 @@ class SlidePage extends Widget {
     popStyle();
   }
 }
+class A_Widget  {
+  
+float x, y, width, height;
+  String label;
+  color widgetColor, labelColor, strokeColor;
+  PFont widgetFont;
+  int widgetType;
+  int widgetID;
+  int event;
+  PImage img;
+  
+  A_Widget(int widgetType, int widgetID, int event, int x, int y, int width, int height, String label, PFont widgetFont, color widgetColor, color labelColor, color strokeColor, PImage img){
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.label = label;
+    this.widgetFont = widgetFont;
+    this.widgetColor = widgetColor;
+    this.labelColor = labelColor;
+    this.strokeColor = strokeColor; 
+    this.widgetType = widgetType;
+    this.widgetID = widgetID;
+    this.event = event;
+    this.img = img;
+}
+
+void draw(){
+ if (widgetType == 1){ //widgetType = 1 = Button
+  textFont(widgetFont);
+  fill(widgetColor);
+  stroke(strokeColor);
+  strokeWeight(2);
+  rect(x,y,width,height,35); //35 is rounded corners radius
+  fill(labelColor);
+  text(label, x + GAP + 3, y+GAP+6);
+ }
+ if (widgetType == 2){
+  textFont(widgetFont);
+  fill(widgetColor);
+  stroke(strokeColor);
+  strokeWeight(2);
+  rect(x,y,width,height,35); //35 is rounded corners radius
+  image(img, x+GAP-1, y+GAP-3);
+ }
+}
+ int getEvent(int mX, int mY){
+  if(mX>x && mX < x+width && mY >y && mY <y+height){  
+   return event; 
+  }
+  return EVENT_NULL;
+ }
+
+}

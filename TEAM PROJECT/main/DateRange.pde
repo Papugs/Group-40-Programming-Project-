@@ -4,8 +4,10 @@ class DateRange {
   int boxWidth;
   int boxHeight;
   int widgetSize;
+  int transMouse;
   int offset;
-  float mouse;
+  int heatMapSize;
+  float mouse, transY;
   ArrayList<Widget> widgetList;
   ArrayList<DisplayFlight> displayFlight;
   DataList dataList;
@@ -14,16 +16,22 @@ class DateRange {
   DataPoint datapoint;
   PFont flightDetailsFont;
   PImage qr;
-  boolean wheel;
+  boolean wheel, noFlights, heatMapCreated, firstHeatMap;
+  int[][] timeHeatData;
+  HeatMap heatMap;
 
 
-  DateRange() {
+  DateRange(float transY) {
     smooth();
+    this.transY = transY;
     boxWidth = 170;
     boxHeight = 40;
     offset = 0;
     mouse = 0;
     widgetSize = 3;
+    noFlights = false;
+    heatMapSize = 400;
+    firstHeatMap = true;
     titleFont = loadFont("NotoSerifMyanmar-Bold-40.vlw");
     calendarIcon = loadImage("calendar.png");
     arrows = loadImage("arrows.png");
@@ -51,19 +59,24 @@ class DateRange {
       "To:", color(200), titleFont, 2));
     widgetList.add(new Widget(SCREENX-boxWidth-30, SCREENY/8, boxWidth, boxHeight,
       "Search", color(255), titleFont, 3));
-    widgetList.add(new SlidePage(0, SCREENY-40, SCREENX, SCREENY,
+    widgetList.add(new SlidePage(0, int(SCREENY-40-transY), SCREENX, SCREENY,
       "Search", color(200), titleFont, 4));
-    widgetList.add(new SlidePage(0, SCREENY-60, SCREENX, SCREENY,
+    widgetList.add(new SlidePage(0, int(SCREENY-60-transY), SCREENX, SCREENY,
       "Search", color(180), titleFont, 5));
   }
 
   void draw() {
+    pushMatrix();
+    translate(0, transY);
     pushStyle();
     background(255);
     if (wheel) mouse -= mouseWheel(mouseEvent);
     for (int widget=widgetList.size()-1; widget>=0; widget--) {
       widgetList.get(widget).draw();
       switch (widget) {
+      case 3:
+        if (heatMapCreated) heatMap.draw(widgetList.get(3).y+40);
+        break;
       case 4:
         offset = 0;
         for (DisplayFlight flight : displayFlight) {
@@ -80,16 +93,21 @@ class DateRange {
         break;
       }
     }
+    if (noFlights) {
+      noFlightsFound();
+    }
     popStyle();
+    popMatrix();
   }
 
   void mousePressed() {
+    transMouse = int(mouseY - transY);
     int event = 0;
     int index = 0;
     int iCal = 0;
     for (int i=0; i<2; i++) {
       for (int iDay=0; iDay<widgetList.get(i).daysArray.size(); iDay++) {
-        event = widgetList.get(i).daysArray.get(iDay).getEventDay(mouseX, mouseY);
+        event = widgetList.get(i).daysArray.get(iDay).getEventDay(mouseX, transMouse);
         iCal = i;
         index = iDay;
         if (event != 0) break;
@@ -98,7 +116,7 @@ class DateRange {
     }
     if (event == 0) {
       for (int i=0; i<widgetSize; i++) {
-        event = widgetList.get(i).getEvent(mouseX, mouseY);
+        event = widgetList.get(i).getEvent(mouseX, transMouse);
         index = i;
         if (event != 0) break;
       }
@@ -112,20 +130,38 @@ class DateRange {
       widgetList.get(index).openCalendar();
       break;
     case 3:
+      timeHeatData = new int[int(endDate[1])+1][24];
       String startDateString = startDate[0] + "/" + startDate[1] + "/" + startDate[2];
       String endDateString = endDate[0] + "/" + endDate[1] + "/" + endDate[2];
       dataList = dataList.getFlightByDateRange(startDateString, endDateString);
-      for (int flights=0; flights<100; flights++) {
-        datapoint = dataList.datapointlist.get(flights);
-        int i = 0;
-        String[] element = new String[] {datapoint.getData(2), datapoint.getData(4), datapoint.getData(8), datapoint.getData(0), datapoint.getData(12), datapoint.getData(14), datapoint.getData(9), datapoint.getData(1), datapoint.getData(15)};
-        displayFlight.add(new DisplayFlight(20, element[i++], element[i++],
-          element[i++], element[i++], element[i++], element[i++], element[i++],
-          element[i++], element[i], flightDetailsFont, qr));
+      for (DataPoint datapoint : dataList.datapointlist) {
+        int hour = int(datapoint.getData(13).replace(" ", ""))/100;
+        String[] date = datapoint.getData(0).split("/");
+        updateTimeHeatMapArray(int(date[1])-1, hour);
       }
-      widgetList.get(4).extend();
-      wheel = true;
-      widgetSize = 5;
+      int[] y_values = new int[] {int(endDate[1]), int(startDate[1])};
+      if (firstHeatMap) {
+        heatMap = new HeatMap(20, 0, SCREENX-50, heatMapSize, Y_TIME_LABELS, timeHeatData, "HEATMAP OF FLIGHTS OVER TIME", y_values);
+        firstHeatMap = false;
+      } else heatMap.updateHeatMap(20, SCREENX-50, heatMapSize, Y_TIME_LABELS, timeHeatData, "HEATMAP OF FLIGHTS OVER TIME", y_values);
+      heatMapCreated = true;
+      if (dataList.datapointlist.size() != 0) {
+        noFlights = false;
+        for (int flights=0; flights<20; flights++) {
+          datapoint = dataList.datapointlist.get(flights);
+          int i = 0;
+          String[] element = new String[] {datapoint.getData(2), datapoint.getData(4), datapoint.getData(8), datapoint.getData(0), datapoint.getData(12), datapoint.getData(14), datapoint.getData(9), datapoint.getData(1), datapoint.getData(15)};
+          if (flights<20) {
+            displayFlight.add(new DisplayFlight(20, element[i++], element[i++],
+              element[i++], element[i++], element[i++], element[i++], element[i++],
+              element[i++], element[i], flightDetailsFont, qr));
+          }
+        }
+
+        widgetList.get(4).extend();
+        wheel = true;
+        widgetSize = 5;
+      } else noFlights = true;
       break;
     case 4:
     case 5:
@@ -144,12 +180,13 @@ class DateRange {
     }
   }
   void mouseMoved() {
+    transMouse = int(mouseY - transY);
     int event = 0;
     int index = 0;
     int iCal = 0;
     for (int i=0; i<2; i++) {
       for (int iDay=0; iDay<widgetList.get(i).daysArray.size(); iDay++) {
-        event = widgetList.get(i).daysArray.get(iDay).getEventDay(mouseX, mouseY);
+        event = widgetList.get(i).daysArray.get(iDay).getEventDay(mouseX, transMouse);
         iCal = i;
         index = iDay;
         if (event != 0) break;
@@ -158,7 +195,7 @@ class DateRange {
     }
     if (event == 0) {
       for (int i=0; i<widgetList.size(); i++) {
-        event = widgetList.get(i).getEvent(mouseX, mouseY);
+        event = widgetList.get(i).getEvent(mouseX, transMouse);
         index = i;
         if (event != 0) break;
       }
@@ -184,7 +221,7 @@ class DateRange {
   }
 
   float mouseWheel(MouseEvent event) {
-      return event.getCount();
+    return event.getCount();
   }
   // source: https://processing.org/examples/lineargradient.html
   void setGradient(int x, int y, float w, float h, color c1, color c2, int axis ) {
@@ -220,5 +257,13 @@ class DateRange {
     textSize(35);
     text("Search Flights by Date Range", SCREENX/2, 40);
     strokeWeight(2);
+  }
+  void noFlightsFound() {
+    fill(0);
+    text("No flights found", SCREENX/2-textDescent(), SCREENY/2);
+  }
+
+  void updateTimeHeatMapArray(int day, int hour) {
+    timeHeatData[day][hour]++;
   }
 }
