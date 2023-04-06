@@ -1,4 +1,8 @@
+
+
 class Screen{
+  Movie myMov;
+  PImage bg_img;
   color bgColor;
   ArrayList<A_Widget> widgets;
   int event;
@@ -11,7 +15,9 @@ class Screen{
    this.widgets = widgets;
    titleFont = loadFont("BookmanOldStyle-120.vlw");
 
+    
    planeImg = loadImage("plane.png");
+   bg_img = loadImage("bgP.jpeg");
   }
   void addWidget(A_Widget widget){
    widgets.add(widget); 
@@ -27,11 +33,11 @@ class Screen{
   }
   
   void draw(){
-    
-    background(bgColor);
+
     if (screenID == 1){
+      background(bgColor);
       fill(0);
-      textFont(titleFont);
+      textFont(titleFont); 
       textSize(120);
       text("Sky's The ", 20, 300);
       text("Limit", 20, 300+120);
@@ -41,6 +47,15 @@ class Screen{
       rect(-10,-10,1265,100,24);
       
       image(planeImg, 299,-10,1000,700);
+    }else if (screenID == 2){
+      fill(201,233,246);
+      noStroke();
+      rect(-10,-10,1265,100,24);
+    }else if (screenID == 3){
+      background(bgColor);
+      fill(201,233,246);
+      noStroke();
+      rect(-10,-10,1265,100,24);
     }
     
     
