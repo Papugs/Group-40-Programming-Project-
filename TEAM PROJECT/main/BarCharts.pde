@@ -15,6 +15,8 @@ public class BarCharts {
           dropdown.setItemHeight(25);
           addItems(dropdown, airportNames);
           dropdown.setBarVisible(false);
+          dropdown.setFont(bigStdFont);
+          dropdown.setItemHeight(30);
           dropdown.close();
           
           dropdown.addCallback(new CallbackListener() {
@@ -92,11 +94,12 @@ public class BarCharts {
             airportLateData[i] = data.getFlightByAirport(airportNameList[i]).getFlightByLateness(5).getSize();
          }
          
-         bc = new BarChart(100, 200, 1000, 400, airportNameList, airportLateData, "Late flights by airport");
+         bc = new BarChart(100, 200, 1000, 350, airportNameList, airportLateData, "Late flights by airport");
      }
      
      public void resetBarChart() {
        bc = null;
+       airportNameList = null;
      }
      
      
