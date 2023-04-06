@@ -1,8 +1,11 @@
+import processing.video.*;
+
 String[] flights2k;
 PFont stdFont;
 PFont titleFont;
 PFont stdFont_20;
 PFont bigStdFont;
+Movie myMov;
 
 
 A_Widget widget1, widget2, widget3, widget4, widget5, widget6, widget7;
@@ -39,6 +42,7 @@ void setup() {
   
   titleFont = loadFont("BookmanOldStyle-50.vlw");
   stdFont = loadFont("ArialRoundedMTBold-9.vlw");
+  stdFont_20 = loadFont("ArialRoundedMTBold-20.vlw");
   bigStdFont = loadFont("Verdana-24.vlw");
 
   textFont(stdFont);
