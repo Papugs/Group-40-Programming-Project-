@@ -1,7 +1,4 @@
-import processing.video.*;
-
 class Screen{
-  Movie myMov;
   PImage bg_img;
   color bgColor;
   ArrayList<A_Widget> widgets;

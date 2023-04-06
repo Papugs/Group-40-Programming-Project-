@@ -2,18 +2,19 @@ String[] flights2k;
 PFont stdFont;
 PFont titleFont;
 PFont stdFont_20;
+PFont bigStdFont;
 
-A_Widget widget1, widget2, widget3, widget4, widget5, widget6;
+
+A_Widget widget1, widget2, widget3, widget4, widget5, widget6, widget7;
 Screen screen1, screen2, screen3;
-Movie myMov;
 
 
 
 DataList data;
 DateRange dateRange;
 int screen;
-Bargraph bg;
 BarChart bc;
+BarCharts bg;
 color black = color (0, 0, 0);
 color white = color (255, 255, 255);
 color peach = color (255, 218, 185);
@@ -22,18 +23,24 @@ color soft_blue = color (201, 233, 246);
 color silver = color(192, 192, 192);
 color dim_grey = color(105, 105, 105);
 
+
+
 void settings() {
   size(SCREENX, SCREENY);
 }
 
 void setup() {
   
+
   myMov = new Movie(this, "planes.mp4");
   myMov.loop();
+
+  
   
   titleFont = loadFont("BookmanOldStyle-50.vlw");
   stdFont = loadFont("ArialRoundedMTBold-9.vlw");
-  stdFont_20 = loadFont("ArialRoundedMTBold-20.vlw");
+  bigStdFont = loadFont("Verdana-24.vlw");
+
   textFont(stdFont);
 
   screen1 = new Screen(1, white, new ArrayList<A_Widget>()); // home screen
@@ -55,6 +62,9 @@ void setup() {
   screen1.addWidget(widget2);
   screen2.addWidget(widget2);
   screen3.addWidget(widget2);
+  
+  widget7 = new A_Widget(1, 007, EVENT_BUTTON7, 550, 125, 170, 50, " Clear Chart", bigStdFont, dim_grey, white, white, homeButton);
+  screen3.addWidget(widget7);
 
 
   widget3 = new A_Widget(1, 003, EVENT_BUTTON3, 190, 30, 90, 25, "   BAR GRAPH", stdFont, dim_grey, white, white, homeButton);//bar graph button defi (PALAK SCREEN)
@@ -88,7 +98,9 @@ void setup() {
   }
 
   bc = new BarChart(50, 50, 200, 150, f, ff, "Late flights by airport");
-  bg = new Bargraph(this);
+  bg = new BarCharts(this);
+  
+
 }
 
 void draw() {
@@ -108,6 +120,11 @@ void draw() {
     screen3.draw();
     bg.draw();
   }
+  
+  if(screen != 3) {
+    bg.dropdown.setBarVisible(false);
+  }
+
 }
 
 void mousePressed() {
@@ -176,6 +193,11 @@ void mousePressed() {
     case EVENT_BUTTON6:
       println("Button6 is pressed.");
       break;
+      
+    case EVENT_BUTTON7:
+      println("Button7 is pressed.");
+      bg.resetBarChart();
+      break;
     }
   }
 }
@@ -209,6 +231,11 @@ void mousePressed() {
         widget6.widgetColor = silver;
         widget6.strokeColor = color(0);
         break;
+        
+      case EVENT_BUTTON7:
+        widget7.widgetColor = silver;
+        widget7.strokeColor = color(0);
+        break;
 
       case EVENT_NULL:
         widget1.strokeColor = color(255);
@@ -221,6 +248,9 @@ void mousePressed() {
 
         widget6.widgetColor = dim_grey;
         widget6.strokeColor = color(255);
+        
+        widget7.widgetColor = dim_grey;
+        widget7.strokeColor = color(255);
 
         break;
       }
