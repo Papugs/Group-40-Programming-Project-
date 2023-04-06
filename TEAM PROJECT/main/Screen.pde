@@ -33,18 +33,18 @@ class Screen{
   
   void draw(){
     if (screenID == 1){
-      background(bgColor);
-      fill(0);
+      
+      fill(201, 233, 246);
       textFont(titleFont); 
       textSize(120);
-      text("Sky's The ", 20, 300);
-      text("Limit", 20, 300+120);
+      text("Sky's The ", 40, 280);
+      text("Limit", 40, 280+120);
       strokeWeight(2);
       fill(201,233,246);
       noStroke();
       rect(-10,-10,1265,100,24);
       
-      image(planeImg, 299,-10,1000,700);
+      //image(planeImg, 299,-10,1000,700);
     }else if (screenID == 2){
       fill(201,233,246);
       noStroke();

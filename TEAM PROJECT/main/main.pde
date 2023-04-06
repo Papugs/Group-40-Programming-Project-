@@ -1,6 +1,7 @@
 String[] flights2k;
 PFont stdFont;
 PFont titleFont;
+PFont stdFont_20;
 
 A_Widget widget1, widget2, widget3, widget4, widget5, widget6;
 Screen screen1, screen2, screen3;
@@ -27,10 +28,12 @@ void settings() {
 
 void setup() {
   
-  myMov = new Movie(this, "testmovie.mov");
+  myMov = new Movie(this, "planes.mp4");
+  myMov.loop();
   
   titleFont = loadFont("BookmanOldStyle-50.vlw");
   stdFont = loadFont("ArialRoundedMTBold-9.vlw");
+  stdFont_20 = loadFont("ArialRoundedMTBold-20.vlw");
   textFont(stdFont);
 
   screen1 = new Screen(1, white, new ArrayList<A_Widget>()); // home screen
@@ -59,7 +62,7 @@ void setup() {
   screen2.addWidget(widget3);
   screen3.addWidget(widget3);
 
-  widget6 = new A_Widget(1, 006, EVENT_BUTTON6, 120, 490, 90, 25, " GET STARTED", stdFont, dim_grey, white, white, homeButton);//bar graph button defi (Nobert SCREEN)
+  widget6 = new A_Widget(1, 006, EVENT_BUTTON6, 650, 250, 150, 50, " GET STARTED", stdFont_20, dim_grey, white, white, homeButton);//bar graph button defi (Nobert SCREEN)
   screen1.addWidget(widget6);
   
   screen =1;
@@ -91,7 +94,12 @@ void setup() {
 void draw() {
   background(100, 100, 100);
   if (screen == 1) {
+    if (myMov.available()) {
+      myMov.read();
+  }
+    image(myMov, 0, 0);
     screen1.draw();
+    
   } else if (screen == 2) {
     
     dateRange.draw();
