@@ -2,9 +2,11 @@ String[] flights2k;
 PFont stdFont;
 PFont titleFont;
 
+
 A_Widget widget1, widget2, widget3, widget4, widget5, widget6;
 Screen screen1, screen2, screen3;
 Movie myMov;
+
 
 
 
@@ -12,6 +14,7 @@ DataList data;
 DateRange dateRange;
 int screen;
 BarChart bc;
+
 color black = color (0, 0, 0);
 color white = color (255, 255, 255);
 color peach = color (255, 218, 185);
@@ -22,12 +25,12 @@ color dim_grey = color(105, 105, 105);
 BarCharts bc;
 
 
+
 void settings() {
   size(SCREENX, SCREENY);
 }
 
-void setup() {
-  
+void setup() {  
   myMov = new Movie(this, "testmovie.mov");
   
   titleFont = loadFont("BookmanOldStyle-50.vlw");
@@ -66,7 +69,6 @@ void setup() {
   screen =1;
 
 
-
   //String[] flightsFull = loadStrings("flights_full.csv");
   //String[] flights100k = loadStrings("flights100k.csv");
   //String[] flights10k = loadStrings("flights10k.csv");
@@ -76,7 +78,6 @@ void setup() {
   data.populateList(flights2k);
   dateRange = new DateRange(90);
   screen = 1;
-
 
   String[] f = {"JFK", "MDW", "LAX", "DCA"};
   int[] ff = new int[f.length];
@@ -92,11 +93,11 @@ void setup() {
 }
 
 void draw() {
+
   background(100, 100, 100);
   if (screen == 1) {
     screen1.draw();
   } else if (screen == 2) {
-    
     dateRange.draw();
     screen2.draw();
   } else if(screen == 3) {
@@ -109,6 +110,7 @@ void draw() {
 void mousePressed() {
   dateRange.mousePressed();
   int event;
+
   if (screen == 1) {
     event = screen1.getEvent(mouseX, mouseY);
     switch(event) {
@@ -221,3 +223,4 @@ void mousePressed() {
         break;
       }
   }
+

@@ -64,7 +64,8 @@ class HeatMap extends BarChart {
     boxHeight = h/linesY;
     boxN = (linesY-1)*24;
     start = y_values[1]-1;
-    ylabelFont = loadFont("Arial-BoldMT-20.vlw");
+    ylabelFont = loadFont("AvenirNext-UltraLight-20.vlw");
+
   }
 
   void draw(float y) {

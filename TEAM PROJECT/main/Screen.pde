@@ -1,4 +1,4 @@
-import processing.video.*;
+
 
 class Screen{
   Movie myMov;
@@ -14,6 +14,7 @@ class Screen{
    this.bgColor = bgColor;
    this.widgets = widgets;
    titleFont = loadFont("BookmanOldStyle-120.vlw");
+
     
    planeImg = loadImage("plane.png");
    bg_img = loadImage("bgP.jpeg");
@@ -32,6 +33,7 @@ class Screen{
   }
   
   void draw(){
+
     if (screenID == 1){
       background(bgColor);
       fill(0);
