@@ -4,7 +4,6 @@ PFont titleFont;
 
 A_Widget widget1, widget2, widget3, widget4, widget5, widget6;
 Screen screen1, screen2, screen3;
-Movie myMov;
 
 
 
@@ -12,6 +11,7 @@ DataList data;
 DateRange dateRange;
 int screen;
 BarChart bc;
+BarCharts bg;
 color black = color (0, 0, 0);
 color white = color (255, 255, 255);
 color peach = color (255, 218, 185);
@@ -19,7 +19,7 @@ color med_blue = color (135, 206, 235);
 color soft_blue = color (201, 233, 246);
 color silver = color(192, 192, 192);
 color dim_grey = color(105, 105, 105);
-BarCharts bc;
+
 
 
 void settings() {
@@ -28,7 +28,7 @@ void settings() {
 
 void setup() {
   
-  myMov = new Movie(this, "testmovie.mov");
+  
   
   titleFont = loadFont("BookmanOldStyle-50.vlw");
   stdFont = loadFont("ArialRoundedMTBold-9.vlw");
@@ -86,7 +86,7 @@ void setup() {
   }
 
   bc = new BarChart(50, 50, 200, 150, f, ff, "Late flights by airport");
-  bg = new Bargraph(this);
+  bg = new BarCharts(this);
   
 
 }
