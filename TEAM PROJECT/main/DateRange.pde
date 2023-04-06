@@ -169,13 +169,19 @@ class DateRange {
       widgetList.get(4).extend();
       break;
     }
+
     if (event >= 104 && event <= 135) {
       if (iCal == 1 || event-103 <= widgetList.get(1).day) {
-        if (iCal == 0) startDate[1] = str(event-103);
-        else if (iCal == 1) endDate[1] = str(event-103);
-
-        widgetList.get(iCal).openCalendar=false;
-        widgetList.get(iCal).day = event-103;
+        if (iCal == 0)  {
+          startDate[1] = str(event-103);
+          widgetList.get(iCal).openCalendar=false;
+          widgetList.get(iCal).day = event - 103;
+        }
+        if (iCal == 1 && event-103 >= widgetList.get(0).day) {
+          endDate[1] = str(event-103);
+          widgetList.get(iCal).openCalendar=false;
+          widgetList.get(iCal).day = event - 103;
+        }
       }
     }
   }
@@ -213,6 +219,8 @@ class DateRange {
           day.highlight = false;
 
           if (i == 0 && int(day.label) > int(widgetList.get(1).day)) {
+            day.highlight(color(230));
+          } else if (i == 1 && int(day.label) < int(widgetList.get(0).day)) {
             day.highlight(color(230));
           }
         }
