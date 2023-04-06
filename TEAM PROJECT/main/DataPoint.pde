@@ -10,11 +10,15 @@ class DataPoint {
     String s = "";
     
     for(String ds : data) {
-      s = s + ds + " ";
+      s = s + ds + ", ";
       
     }
     return s;
   }  
+  
+  String getData(int index) {
+    return data[index];
+  }
 }
 /*
  FL_DATE,
@@ -30,8 +34,8 @@ class DataPoint {
  DEST_WAC,
  CRS_DEP_TIME, (CRS = Common reporting standard / actual)
  DEP_TIME,
- CRS_ARR_TIME,
- ARR_TIME,
+ CRS_ARR_TIME, 13
+ ARR_TIME,      14
  CANCELLED,
  DIVERTED, (other arrival airport than scheduled)
  DISTANCE
