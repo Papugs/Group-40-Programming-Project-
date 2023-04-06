@@ -11,7 +11,6 @@ Movie myMov;
 DataList data;
 DateRange dateRange;
 int screen;
-Bargraph bg;
 BarChart bc;
 color black = color (0, 0, 0);
 color white = color (255, 255, 255);
@@ -20,6 +19,8 @@ color med_blue = color (135, 206, 235);
 color soft_blue = color (201, 233, 246);
 color silver = color(192, 192, 192);
 color dim_grey = color(105, 105, 105);
+BarCharts bc;
+
 
 void settings() {
   size(SCREENX, SCREENY);
@@ -86,6 +87,8 @@ void setup() {
 
   bc = new BarChart(50, 50, 200, 150, f, ff, "Late flights by airport");
   bg = new Bargraph(this);
+  
+
 }
 
 void draw() {
@@ -100,6 +103,7 @@ void draw() {
     screen3.draw();
     bg.draw();
   }
+
 }
 
 void mousePressed() {
