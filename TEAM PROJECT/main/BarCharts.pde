@@ -10,7 +10,7 @@ public class BarCharts {
      
      public BarCharts(PApplet p) {
           cp5 = new ControlP5(p);
-          dropdown = cp5.addDropdownList("dropdown").setPosition(100, 25).setSize(400, 200);
+          dropdown = cp5.addDropdownList("dropdown").setPosition(100, 125).setSize(400, 200);
           dropdown.setBarHeight(50);
           dropdown.setItemHeight(25);
           addItems(dropdown, airportNames);
@@ -28,16 +28,20 @@ public class BarCharts {
      }
      
      public void draw() {
+       textFont(bigStdFont);
        
-       background(255);
-       dropdown.setBarVisible(true);
-       if(bc != null) {
-         bc.draw();
-       } else {
-         fill(100);
-         text("Select an airport from the dropdown menu to get started", 250, 300);
-       }
-       cp5.draw();
+      
+         dropdown.setBarVisible(true);
+         if(bc != null) {
+           bc.draw();
+         } else {
+           fill(100);
+           text("Select an airport from the dropdown menu to get started", 300, 400);
+         }
+         cp5.draw();
+       
+       
+       textFont(stdFont);
      }
      
      public void addItems(DropdownList dl, String[] values) {
@@ -88,7 +92,7 @@ public class BarCharts {
             airportLateData[i] = data.getFlightByAirport(airportNameList[i]).getFlightByLateness(5).getSize();
          }
          
-         bc = new BarChart(100, 100, 1000, 400, airportNameList, airportLateData, "Late flights by airport");
+         bc = new BarChart(100, 200, 1000, 400, airportNameList, airportLateData, "Late flights by airport");
      }
      
      public void resetBarChart() {

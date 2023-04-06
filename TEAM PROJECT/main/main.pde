@@ -1,8 +1,9 @@
 String[] flights2k;
 PFont stdFont;
 PFont titleFont;
+PFont bigStdFont;
 
-A_Widget widget1, widget2, widget3, widget4, widget5, widget6;
+A_Widget widget1, widget2, widget3, widget4, widget5, widget6, widget7;
 Screen screen1, screen2, screen3;
 
 
@@ -32,6 +33,7 @@ void setup() {
   
   titleFont = loadFont("BookmanOldStyle-50.vlw");
   stdFont = loadFont("ArialRoundedMTBold-9.vlw");
+  bigStdFont = loadFont("Verdana-24.vlw");
   textFont(stdFont);
 
   screen1 = new Screen(1, white, new ArrayList<A_Widget>()); // home screen
@@ -53,6 +55,9 @@ void setup() {
   screen1.addWidget(widget2);
   screen2.addWidget(widget2);
   screen3.addWidget(widget2);
+  
+  widget7 = new A_Widget(1, 007, EVENT_BUTTON7, 550, 125, 170, 50, " CLEAR CHART", bigStdFont, dim_grey, white, white, homeButton);
+  screen3.addWidget(widget7);
 
 
   widget3 = new A_Widget(1, 003, EVENT_BUTTON3, 190, 30, 90, 25, "   BAR GRAPH", stdFont, dim_grey, white, white, homeButton);//bar graph button defi (PALAK SCREEN)
@@ -102,6 +107,10 @@ void draw() {
   } else if(screen == 3) {
     screen3.draw();
     bg.draw();
+  }
+  
+  if(screen != 3) {
+    bg.dropdown.setBarVisible(false);
   }
 
 }
@@ -172,6 +181,11 @@ void mousePressed() {
     case EVENT_BUTTON6:
       println("Button6 is pressed.");
       break;
+      
+    case EVENT_BUTTON7:
+      println("Button7 is pressed.");
+      bg.resetBarChart();
+      break;
     }
   }
 }
@@ -205,6 +219,11 @@ void mousePressed() {
         widget6.widgetColor = silver;
         widget6.strokeColor = color(0);
         break;
+        
+      case EVENT_BUTTON7:
+        widget7.widgetColor = silver;
+        widget7.strokeColor = color(0);
+        break;
 
       case EVENT_NULL:
         widget1.strokeColor = color(255);
@@ -217,6 +236,9 @@ void mousePressed() {
 
         widget6.widgetColor = dim_grey;
         widget6.strokeColor = color(255);
+        
+        widget7.widgetColor = dim_grey;
+        widget7.strokeColor = color(255);
 
         break;
       }

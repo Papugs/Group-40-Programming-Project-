@@ -6,6 +6,7 @@ final int EVENT_BUTTON3=3;
 final int EVENT_BUTTON4=4;
 final int EVENT_BUTTON5=5;
 final int EVENT_BUTTON6=6;
+final int EVENT_BUTTON7=7;
 
 final static int EVENT_NULL = 0;
 final static int GAP = 10;
