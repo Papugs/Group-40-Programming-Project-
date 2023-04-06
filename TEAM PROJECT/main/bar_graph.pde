@@ -19,7 +19,7 @@ class Bargraph {
 
     // Create the first plot
     plot1 = new GPlot(p);
-    plot1.setPos(30, 30);
+    plot1.setPos(150, 150);
     plot1.setMar(60, 70, 40, 70);
     plot1.setDim(300, 300);
     plot1.setAxesOffset(4);
@@ -53,7 +53,7 @@ class Bargraph {
   }
   void draw() {//Plot Creation
     
-    background(255);
+    
     //Draw the first plot
     plot1.beginDraw();
     plot1.drawBox();
