@@ -113,6 +113,15 @@ class DataList {
     }
     return new DataList(carrierFlights);
   }
+   public DataList getFlightByState(String Stateabb) {
+    ArrayList<DataPoint> StateFlights = new ArrayList<DataPoint>(); //<>//
+    for(DataPoint dp : datapointlist) {
+      if(dp.getData(5).compareTo(Stateabb) == 0){
+        StateFlights.add(dp);
+      }  
+    }
+    return new DataList(StateFlights);
+  }
   
   public int getSize() {
     return datapointlist.size();
