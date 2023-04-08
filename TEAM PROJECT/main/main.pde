@@ -16,7 +16,6 @@ Screen screen1, screen2, screen3;
 DataList data;
 DateRange dateRange;
 int screen;
-BarChart bc;
 BarCharts bg;
 color black = color (0, 0, 0);
 color white = color (255, 255, 255);
@@ -101,7 +100,6 @@ void setup() {
     ff[i] = data.getFlightByAirport(f[i]).getFlightByLateness(5).getSize();
   }
 
-  bc = new BarChart(50, 50, 200, 150, f, ff, "Late flights by airport");
   bg = new BarCharts(this);
   
 
@@ -178,6 +176,7 @@ void mousePressed() {
       break;
     }
   }else if ( screen == 3) {
+    bg.mousePressed();
     event = screen3.getEvent(mouseX, mouseY);
     switch(event) {
     case EVENT_BUTTON1:

@@ -11,17 +11,16 @@ public class BarCharts {
      public BarCharts(PApplet p) {
           cp5 = new ControlP5(p);
           dropdown = cp5.addDropdownList("dropdown").setPosition(100, 125).setSize(400, 200);
-          dropdown.setBarHeight(50);
-          dropdown.setItemHeight(25);
+          dropdown.setBarHeight(40);
           addItems(dropdown, airportNames);
           dropdown.setBarVisible(false);
           dropdown.setFont(bigStdFont);
-          dropdown.setItemHeight(30);
+          dropdown.setItemHeight(40);
           dropdown.close();
           
           dropdown.addCallback(new CallbackListener() {
             public void controlEvent(CallbackEvent event) {
-              if (event.getAction() == ControlP5.ACTION_CLICK) {
+              if (event.getAction() == ControlP5.ACTION_CLICK && !dropdown.isOpen()) {
                 int selectedValue = (int) dropdown.getValue();
                 if(!isNameInList(airportNames[selectedValue])) updateNamesList(selectedValue);
               }
@@ -35,6 +34,7 @@ public class BarCharts {
       
          dropdown.setBarVisible(true);
          if(bc != null) {
+
            bc.draw();
          } else {
            fill(100);
@@ -86,7 +86,7 @@ public class BarCharts {
          if(airportLateData == null) {
            airportLateData = new int[1];
          } else {
-           airportLateData = new int[airportLateData.length+1];
+           airportLateData = new int[airportNameList.length];
          }
          
          
@@ -98,8 +98,42 @@ public class BarCharts {
      }
      
      public void resetBarChart() {
+       dropdown.close();
        bc = null;
        airportNameList = null;
+     }
+     
+     public void removeItemFromChart(int index) {
+       String[] newList;
+       if(airportNameList.length != 1) {
+         newList = new String[airportNameList.length-1];
+         
+         int j = 0; 
+         for(int i = 0; i<newList.length; i++) {
+            if(i == index) {
+              j++;
+            }
+            
+            newList[i] = airportNameList[j];
+            j++;
+         }
+         
+         
+         airportNameList = newList;
+         updateBarChart();         
+       } else {
+         resetBarChart();
+       }
+
+     }
+     
+     
+     public void mousePressed() {
+       if(bc != null && !dropdown.isOpen()) {
+         if(bc.getWhichBarSelected(mouseX, mouseY) != -1) {
+           removeItemFromChart(bc.getWhichBarSelected(mouseX, mouseY));
+         }
+       }
      }
      
      

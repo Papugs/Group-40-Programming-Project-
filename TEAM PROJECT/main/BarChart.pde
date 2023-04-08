@@ -21,16 +21,34 @@ public class BarChart {
   }
 
   public void draw() {
-    fill(100);
     for (int i = 0; i<size; i++) {
+      fill(color(52, 155, 235));
       int offset = i*(h/size);
+      if(    mouseX >= x 
+          && mouseX <= x+(w*0.7*((float) values[i]/ (float) max))
+          && mouseY >= y+offset
+          && mouseY <= y+offset + (h/size)*.8) {
+            stroke(100);
+          } else {
+            noStroke();
+          }
+          
       rect(x, y+offset, (w*0.7*((float) values[i]/ (float) max)), (h/size)*.8);
+      fill(100);
       textAlign(LEFT);
-      text(labels[i] + "-" + values[i], x+(w*0.75*((float)values[i]/ (float) max)), (y+offset)+(((float) h/ (float) size)*0.65));
-      textAlign(CENTER);
-      text(title, x+((float) w / 2.0), (y+h)*1.25);
-      textAlign(LEFT);
+      text(labels[i] + "-" + values[i] + " late flights", x+(w*0.75*((float)values[i]/ (float) max)), (y+offset)+(((float) h/ (float) size)*0.65));
+      
     }
+    textAlign(CENTER);
+    float textSize = textAscent()/textDescent();
+    textSize(50);
+    text(title, x+((float) w / 2.0), (y+h)*1.1);
+    textSize(textSize);
+    textFont(bigStdFont);
+    text("Click on a bar to remove it from the graph", x+((float) w / 2.0), (y+h)*1.15);
+    textFont(stdFont_20);
+    textAlign(LEFT);
+    noStroke();
   }
 
   public int getMax(int[] v) {
@@ -39,6 +57,20 @@ public class BarChart {
       if (v[i] > max) max = v[i];
     }
     return max;
+  }
+  
+  public int getWhichBarSelected(int mx, int my) {
+      for (int i = 0; i<size; i++) {
+      int offset = i*(h/size);
+      if(    mouseX >= x 
+          && mouseX <= x+(w*0.7*((float) values[i]/ (float) max))
+          && mouseY >= y+offset
+          && mouseY <= y+offset + (h/size)*.8) {
+            return i;
+          }
+      }
+    
+    return -1;
   }
 }
 class HeatMap extends BarChart {
