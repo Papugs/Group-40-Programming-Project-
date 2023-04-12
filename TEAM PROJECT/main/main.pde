@@ -1,5 +1,5 @@
 import processing.video.*;
-
+USA_MAP USAMAP;
 String[] flights2k;
 PFont stdFont;
 PFont titleFont;
@@ -16,10 +16,6 @@ Screen screen1, screen2, screen3;
 DataList data;
 DateRange dateRange;
 int screen;
-<<<<<<< Updated upstream
-=======
-//Bargraph bg;
->>>>>>> Stashed changes
 BarChart bc;
 BarCharts bg;
 color black = color (0, 0, 0);
@@ -83,7 +79,7 @@ void setup() {
   widget6 = new A_Widget(1, 006, EVENT_BUTTON6, 650, 250, 150, 50, " GET STARTED", stdFont_20, dim_grey, white, white, homeButton);//bar graph button defi (Nobert SCREEN)
   screen1.addWidget(widget6);
   
-  screen =4;
+  screen =1;
 
 
 
@@ -95,27 +91,9 @@ void setup() {
   data = new DataList();
   data.populateList(flights2k);
   dateRange = new DateRange(90);
-<<<<<<< Updated upstream
-  screen = 1;
-=======
+  USAMAP = new USA_MAP();
   screen = 4;
->>>>>>> Stashed changes
 
-
-  String[] f = {"JFK", "MDW", "LAX", "DCA"};
-  int[] ff = new int[f.length];
-
-  for (int i = 0; i<f.length; i++) {
-    ff[i] = data.getFlightByAirport(f[i]).getFlightByLateness(5).getSize();
-  }
-
-  bc = new BarChart(50, 50, 200, 150, f, ff, "Late flights by airport");
-<<<<<<< Updated upstream
-  bg = new BarCharts(this);
-=======
-  //bg = new Bargraph(this);
->>>>>>> Stashed changes
-  
 
 }
 
@@ -134,18 +112,17 @@ void draw() {
     screen2.draw();
   } else if(screen == 3) {
     screen3.draw();
-<<<<<<< Updated upstream
+ 
     bg.draw();
-=======
+ 
     //bg.draw();
   } else if(screen==4){
     USAMAP.draw();
->>>>>>> Stashed changes
   }
   
-  if(screen != 3) {
-    bg.dropdown.setBarVisible(false);
-  }
+  //if(screen != 3) {
+  //  bg.dropdown.setBarVisible(false);
+  //}
 
 }
 

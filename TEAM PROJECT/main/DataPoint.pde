@@ -7,7 +7,7 @@ class DataPoint {
   }
   
   String toString() {
-    String s = "";
+    String s = " ";
     
     for(String ds : data) {
       s = s + ds + ", ";
