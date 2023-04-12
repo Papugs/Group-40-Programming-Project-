@@ -258,3 +258,15 @@ void mousePressed() {
         break;
       }
   }
+  
+ public void keyPressed() {
+   if(screen == 3) {
+     bg.keyPressed();
+   }
+ }
+ 
+ public void keyTyped() {
+   if(screen == 3) {
+     bg.keyTyped();
+   }
+ }
