@@ -20,7 +20,7 @@ public class BarCharts {
           dropdown.setItemHeight(40);
           dropdown.close();
           
-          tb = new TextBox(750, 125, 150, 50, "How late? ");
+          tb = new TextBox(1000, 125, 150, 50, "How late? ");
           
           dropdown.addCallback(new CallbackListener() {
             public void controlEvent(CallbackEvent event) {
@@ -38,7 +38,6 @@ public class BarCharts {
        textFont(bigStdFont);
        tb.draw();
        if(tb.pollForNewNumber()) {
-         println("new number here");
          lateness = tb.getNewNumber();
          updateBarChart();
        }
@@ -46,7 +45,8 @@ public class BarCharts {
       
          dropdown.setBarVisible(true);
          if(bc != null) {
-
+           fill(100);
+           text("Get flights that are late by: ", 750, 125);
            bc.draw();
          } else {
            fill(100);
@@ -106,7 +106,6 @@ public class BarCharts {
             airportLateData[i] = data.getFlightByAirport(airportNameList[i]).getFlightByLateness(lateness).getSize();
          }
          
-         println("updating with lateness: " + lateness);
          
          bc = new BarChart(100, 200, 1000, 350, airportNameList, airportLateData, "Late flights by airport");
      }

@@ -59,7 +59,6 @@ public class TextBox {
       
       newNumber = true;
       fill = false;
-      println("number: " + number);
     }
     else if (keyCode == BACKSPACE && input.length() > 0) {
       // Remove the last character from the input string
