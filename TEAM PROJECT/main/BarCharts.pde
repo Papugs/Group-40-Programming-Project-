@@ -7,6 +7,8 @@ public class BarCharts {
      int[] airportLateData;
      BarChart bc;
      DropdownList dropdown;
+     TextBox tb;
+     int lateness; 
      
      public BarCharts(PApplet p) {
           cp5 = new ControlP5(p);
@@ -18,6 +20,8 @@ public class BarCharts {
           dropdown.setItemHeight(40);
           dropdown.close();
           
+          tb = new TextBox(1000, 125, 150, 50, "How late? ");
+          
           dropdown.addCallback(new CallbackListener() {
             public void controlEvent(CallbackEvent event) {
               if (event.getAction() == ControlP5.ACTION_CLICK && !dropdown.isOpen()) {
@@ -26,15 +30,23 @@ public class BarCharts {
               }
             }
           });
+          
+          lateness = 5;
      }
      
      public void draw() {
        textFont(bigStdFont);
+       tb.draw();
+       if(tb.pollForNewNumber()) {
+         lateness = tb.getNewNumber();
+         updateBarChart();
+       }
        
       
          dropdown.setBarVisible(true);
          if(bc != null) {
-
+           fill(100);
+           text("Get flights that are late by: ", 750, 125);
            bc.draw();
          } else {
            fill(100);
@@ -91,8 +103,9 @@ public class BarCharts {
          
          
          for(int i = 0; i<airportNameList.length;i++) {
-            airportLateData[i] = data.getFlightByAirport(airportNameList[i]).getFlightByLateness(5).getSize();
+            airportLateData[i] = data.getFlightByAirport(airportNameList[i]).getFlightByLateness(lateness).getSize();
          }
+         
          
          bc = new BarChart(100, 200, 1000, 350, airportNameList, airportLateData, "Late flights by airport");
      }
@@ -134,6 +147,16 @@ public class BarCharts {
            removeItemFromChart(bc.getWhichBarSelected(mouseX, mouseY));
          }
        }
+       
+       tb.mousePressed();
+     }
+     
+     public void keyPressed() {
+       tb.keyPressed();
+     }
+     
+     public void keyTyped() {
+       tb.keyTyped();
      }
      
      

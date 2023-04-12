@@ -66,7 +66,7 @@ void setup() {
   screen2.addWidget(widget2);
   screen3.addWidget(widget2);
   
-  widget7 = new A_Widget(1, 007, EVENT_BUTTON7, 550, 125, 170, 50, " Clear Chart", bigStdFont, dim_grey, white, white, homeButton);
+  widget7 = new A_Widget(1, 007, EVENT_BUTTON7, 500, 115, 170, 50, " Clear Chart", bigStdFont, dim_grey, white, white, homeButton);
   screen3.addWidget(widget7);
 
 
@@ -258,3 +258,15 @@ void mousePressed() {
         break;
       }
   }
+  
+ public void keyPressed() {
+   if(screen == 3) {
+     bg.keyPressed();
+   }
+ }
+ 
+ public void keyTyped() {
+   if(screen == 3) {
+     bg.keyTyped();
+   }
+ }
