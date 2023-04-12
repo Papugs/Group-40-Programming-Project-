@@ -9,7 +9,7 @@ Movie myMov;
 
 
 A_Widget widget1, widget2, widget3, widget4, widget5, widget6, widget7;
-Screen screen1, screen2, screen3;
+Screen screen0,screen1, screen2, screen3;
 
 
 
@@ -27,25 +27,28 @@ color dim_grey = color(105, 105, 105);
 
 
 
+int dataImportCounter = 0;
+int runOnlyOnce =0;
+
 void settings() {
   size(SCREENX, SCREENY);
 }
 
 void setup() {
-  
 
-  myMov = new Movie(this, "planes.mp4");
-  myMov.loop();
 
-  
-  
+  thread("movLoad");
+
+
+
   titleFont = loadFont("BookmanOldStyle-50.vlw");
   stdFont = loadFont("ArialRoundedMTBold-9.vlw");
   stdFont_20 = loadFont("ArialRoundedMTBold-20.vlw");
   bigStdFont = loadFont("Verdana-24.vlw");
 
   textFont(stdFont);
-
+  
+  screen0 = new Screen(0, white, new ArrayList<A_Widget>()); // loading screen
   screen1 = new Screen(1, white, new ArrayList<A_Widget>()); // home screen
   screen2 = new Screen(2, white, new ArrayList<A_Widget>()); // boardingpass
   screen3 = new Screen(3, white, new ArrayList<A_Widget>()); // bar chart screen
@@ -65,7 +68,7 @@ void setup() {
   screen1.addWidget(widget2);
   screen2.addWidget(widget2);
   screen3.addWidget(widget2);
-  
+
   widget7 = new A_Widget(1, 007, EVENT_BUTTON7, 500, 115, 170, 50, " Clear Chart", bigStdFont, dim_grey, white, white, homeButton);
   screen3.addWidget(widget7);
 
@@ -77,7 +80,7 @@ void setup() {
 
   widget6 = new A_Widget(1, 006, EVENT_BUTTON6, 650, 250, 150, 50, " GET STARTED", stdFont_20, dim_grey, white, white, homeButton);//bar graph button defi (Nobert SCREEN)
   screen1.addWidget(widget6);
-  
+
   screen =1;
 
 
@@ -85,48 +88,71 @@ void setup() {
   //String[] flightsFull = loadStrings("flights_full.csv");
   //String[] flights100k = loadStrings("flights100k.csv");
   //String[] flights10k = loadStrings("flights10k.csv");
-  flights2k = loadStrings("flights2k.csv");
-
-  data = new DataList();
-  data.populateList(flights2k);
-  dateRange = new DateRange(90);
-  screen = 1;
-
-
-  String[] f = {"JFK", "MDW", "LAX", "DCA"};
-  int[] ff = new int[f.length];
-
-  for (int i = 0; i<f.length; i++) {
-    ff[i] = data.getFlightByAirport(f[i]).getFlightByLateness(5).getSize();
-  }
-
-  bg = new BarCharts(this);
-  
-
+  //flights2k = loadStrings("flights2k.csv");
+}
+void movLoad() {
+  myMov = new Movie(this, "planes.mp4");
+  myMov.loop();
 }
 
-void draw() {
-  background(100, 100, 100);
-  if (screen == 1) {
-    if (myMov.available()) {
-      myMov.read();
-  }
-    image(myMov, 0, 0);
-    screen1.draw();
-    
-  } else if (screen == 2) {
-    
-    dateRange.draw();
-    screen2.draw();
-  } else if(screen == 3) {
-    screen3.draw();
-    bg.draw();
-  }
-  
-  if(screen != 3) {
-    bg.dropdown.setBarVisible(false);
-  }
+void remSetup() {
+  if (flights2k !=null) {
 
+    data = new DataList();
+    data.populateList(flights2k);
+    dateRange = new DateRange(90);
+    screen = 1;
+
+
+    String[] f = {"JFK", "MDW", "LAX", "DCA"};
+    int[] ff = new int[f.length];
+
+    for (int i = 0; i<f.length; i++) {
+      ff[i] = data.getFlightByAirport(f[i]).getFlightByLateness(5).getSize();
+    }
+
+    bg = new BarCharts(this);
+  }
+}
+
+
+void draw() {
+
+  thread("dataLoad");
+
+  screen0.draw();
+
+  if (flights2k !=null & myMov != null ) {
+
+    if (runOnlyOnce == 0) remSetup();
+    runOnlyOnce =1;
+
+    background(100, 100, 100);
+    if (screen == 1) {
+      if (myMov.available()) {
+        myMov.read();
+      }
+      image(myMov, 0, 0);
+      screen1.draw();
+    } else if (screen == 2) {
+
+      dateRange.draw();
+      screen2.draw();
+    } else if (screen == 3) {
+      screen3.draw();
+      bg.draw();
+    }
+
+    if (screen != 3) {
+      bg.dropdown.setBarVisible(false);
+    }
+  }
+}
+
+
+void dataLoad() {
+
+  flights2k = loadStrings("flights2k.csv");
 }
 
 void mousePressed() {
@@ -175,7 +201,7 @@ void mousePressed() {
       println("Button6 is pressed.");
       break;
     }
-  }else if ( screen == 3) {
+  } else if ( screen == 3) {
     bg.mousePressed();
     event = screen3.getEvent(mouseX, mouseY);
     switch(event) {
@@ -196,7 +222,7 @@ void mousePressed() {
     case EVENT_BUTTON6:
       println("Button6 is pressed.");
       break;
-      
+
     case EVENT_BUTTON7:
       println("Button7 is pressed.");
       bg.resetBarChart();
@@ -204,69 +230,75 @@ void mousePressed() {
     }
   }
 }
-  void mouseMoved() {
+void mouseMoved() {
+  if (flights2k !=null & myMov != null ){
+  
+  
     dateRange.mouseMoved();
     int event;
     if (screen == 1) {
       event = screen1.getEvent(mouseX, mouseY);
-    }else if(screen ==2){
-       event = screen2.getEvent(mouseX, mouseY); 
-    }else if (screen ==  3) {
-       event = screen3.getEvent(mouseX, mouseY); 
-    }else{
-       event = screen1.getEvent(mouseX, mouseY);
+    } else if (screen ==2) {
+      event = screen2.getEvent(mouseX, mouseY);
+    } else if (screen ==  3) {
+      event = screen3.getEvent(mouseX, mouseY);
+    } else {
+      event = screen1.getEvent(mouseX, mouseY);
     }
     switch(event) {
-      case EVENT_BUTTON1:
-        widget1.strokeColor = color(0);
-        break;
-      case EVENT_BUTTON2:
-        widget2.widgetColor = silver;
-        widget2.strokeColor = color(0);
-        break;
-
-      case EVENT_BUTTON3:
-        widget3.widgetColor = silver;
-        widget3.strokeColor = color(0);
-        break;
-
-      case EVENT_BUTTON6:
-        widget6.widgetColor = silver;
-        widget6.strokeColor = color(0);
-        break;
-        
-      case EVENT_BUTTON7:
-        widget7.widgetColor = silver;
-        widget7.strokeColor = color(0);
-        break;
-
-      case EVENT_NULL:
-        widget1.strokeColor = color(255);
-
-        widget2.widgetColor = dim_grey;
-        widget2.strokeColor = color(255);
-
-        widget3.widgetColor = dim_grey;
-        widget3.strokeColor = color(255);
-
-        widget6.widgetColor = dim_grey;
-        widget6.strokeColor = color(255);
-        
-        widget7.widgetColor = dim_grey;
-        widget7.strokeColor = color(255);
-
-        break;
-      }
-  }
+    case EVENT_BUTTON1:
+      widget1.strokeColor = color(0);
+      break;
+    case EVENT_BUTTON2:
+      widget2.widgetColor = silver;
+      widget2.strokeColor = color(0);
+      break;
   
- public void keyPressed() {
-   if(screen == 3) {
-     bg.keyPressed();
-   }
- }
- 
- public void keyTyped() {
-   if(screen == 3) {
-     bg.keyTyped();
-   }
- }
+    case EVENT_BUTTON3:
+      widget3.widgetColor = silver;
+      widget3.strokeColor = color(0);
+      break;
+  
+    case EVENT_BUTTON6:
+      widget6.widgetColor = silver;
+      widget6.strokeColor = color(0);
+      break;
+  
+    case EVENT_BUTTON7:
+      widget7.widgetColor = silver;
+      widget7.strokeColor = color(0);
+      break;
+  
+    case EVENT_NULL:
+      widget1.strokeColor = color(255);
+  
+      widget2.widgetColor = dim_grey;
+      widget2.strokeColor = color(255);
+  
+      widget3.widgetColor = dim_grey;
+      widget3.strokeColor = color(255);
+  
+      widget6.widgetColor = dim_grey;
+      widget6.strokeColor = color(255);
+  
+      widget7.widgetColor = dim_grey;
+      widget7.strokeColor = color(255);
+  
+      break;
+    }
+  
+  
+  }
+}
+
+public void keyPressed() {
+  if (screen == 3) {
+    bg.keyPressed();
+  }
+}
+
+public void keyTyped() {
+  if (screen == 3) {
+    bg.keyTyped();
+  }
+}
