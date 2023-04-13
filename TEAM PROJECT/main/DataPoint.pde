@@ -7,7 +7,7 @@ class DataPoint {
   }
   
   String toString() {
-    String s = "";
+    String s = " ";
     
     for(String ds : data) {
       s = s + ds + ", ";
@@ -21,22 +21,22 @@ class DataPoint {
   }
 }
 /*
- FL_DATE,
- MKT_CARRIER, (MKT = MARKET)
- MKT_CARRIER_FL_NUM,
- ORIGIN,
- ORIGIN_CITY_NAME,
- ORIGIN_STATE_ABR, (ABR = abreviation)
- ORIGIN_WAC, (WAC = World Area Code)
- DEST,
- DEST_CITY_NAME,
- DEST_STATE_ABR,
- DEST_WAC,
- CRS_DEP_TIME, (CRS = Common reporting standard / actual)
- DEP_TIME,
+ FL_DATE, 0
+ MKT_CARRIER, (MKT = MARKET) 1
+ MKT_CARRIER_FL_NUM, 2
+ ORIGIN, 3 
+ ORIGIN_CITY_NAME, 4
+ ORIGIN_STATE_ABR, (ABR = abreviation) 5
+ ORIGIN_WAC, (WAC = World Area Code) 6 
+ DEST, 7
+ DEST_CITY_NAME, 8
+ DEST_STATE_ABR, 9
+ DEST_WAC, 10
+ CRS_DEP_TIME, (CRS = Common reporting standard / actual) 11
+ DEP_TIME,   12
  CRS_ARR_TIME, 13
  ARR_TIME,      14
- CANCELLED,
- DIVERTED, (other arrival airport than scheduled)
- DISTANCE
+ CANCELLED,     15
+ DIVERTED, (other arrival airport than scheduled)    16
+ DISTANCE    17 
  */

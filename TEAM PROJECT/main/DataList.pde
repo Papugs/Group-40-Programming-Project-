@@ -1,24 +1,31 @@
-class DataList {
+class DataList { //<>//
   ArrayList<DataPoint> datapointlist;
-  
+
   public DataList() {
     datapointlist= new ArrayList<>();
   }
-  
+
   public DataList(ArrayList<DataPoint> list) {
     datapointlist = list;
   }
-  
+
   public void populateList(String[] CSVData) {
-     for(String s : CSVData) {
-       datapointlist.add(new DataPoint(s));
-     }
+    for (String s : CSVData) {
+      datapointlist.add(new DataPoint(s));
+    }
   }
 
   public void printAll() {
     for (DataPoint dp : datapointlist) {
       println(dp.toString());
     }
+  }
+  public ArrayList displayAll() {
+    ArrayList<String> result = new ArrayList<String>();
+    for (DataPoint dp : datapointlist) {
+      result.add(dp.toString());
+    }
+    return result;
   }
 
   void draw() {
@@ -59,65 +66,76 @@ class DataList {
 
   public DataList getFlightByAirport(String airportName) {
     ArrayList<DataPoint> airportFlights = new ArrayList<DataPoint>();
-    for(DataPoint dp : datapointlist) {
-      if(dp.getData(3).compareTo(airportName) == 0){
+    for (DataPoint dp : datapointlist) {
+      if (dp.getData(3).compareTo(airportName) == 0) {
         airportFlights.add(dp);
-      }  
+      }
     }
     return new DataList(airportFlights);
   }
 
-  
+
   //returns flights that are later than the given number
   public DataList getFlightByLateness(int latenessMinutes) {
     ArrayList<DataPoint> lateflights = new ArrayList<DataPoint>();
-    for(DataPoint dp : datapointlist) {
+    for (DataPoint dp : datapointlist) {
       String scheduledArrival = dp.getData(16);
       String actualArrival = dp.getData(15);
-      
-      if(!scheduledArrival.equals("")) {
+
+      if (!scheduledArrival.equals("")) {
         int sAInt = Integer.parseInt(scheduledArrival);
         sAInt = (sAInt % 100) + 60*(sAInt / 100);
-        
-        int aAInt = Integer.parseInt(actualArrival);
-        aAInt = (aAInt % 100) + 60*(aAInt / 100);  
-        
-        if(aAInt >= 1080 && sAInt <= 360) sAInt += 1440;
 
-        if(aAInt - sAInt >= latenessMinutes) {
+        int aAInt = Integer.parseInt(actualArrival);
+        aAInt = (aAInt % 100) + 60*(aAInt / 100);
+
+        if (aAInt >= 1080 && sAInt <= 360) sAInt += 1440;
+
+        if (aAInt - sAInt >= latenessMinutes) {
           lateflights.add(dp);
         }
       }
-    
-     }
-    
+    }
+
     return new DataList(lateflights);
   }
-  
+
   public DataList getFlightByDestination(String airportName) {
     ArrayList<DataPoint> airportFlights = new ArrayList<DataPoint>();
-    for(DataPoint dp : datapointlist) {
-      if(dp.getData(7).compareTo(airportName) == 0){
+    for (DataPoint dp : datapointlist) {
+      if (dp.getData(7).compareTo(airportName) == 0) {
         airportFlights.add(dp);
-      }  
+      }
     }
     return new DataList(airportFlights);
   }
-  
+
   public DataList getFlightByMarketCarrier(String marketCarrier) {
     ArrayList<DataPoint> carrierFlights = new ArrayList<DataPoint>();
-    for(DataPoint dp : datapointlist) {
-      if(dp.getData(1).compareTo(marketCarrier) == 0){
+    for (DataPoint dp : datapointlist) {
+      if (dp.getData(1).compareTo(marketCarrier) == 0) {
         carrierFlights.add(dp);
-      }  
+      }
     }
     return new DataList(carrierFlights);
   }
-  
+  public DataList getFlightByState(String Stateabb) {
+    ArrayList<DataPoint> StateFlights = new ArrayList<DataPoint>();
+    Stateabb = " " + Stateabb + "\"";
+    for (DataPoint dp : datapointlist) {
+      if (dp.getData(5).compareTo(Stateabb) == 0) {
+        StateFlights.add(dp);
+      }
+    }
+    String [] statesList = new String[StateFlights.size()];
+    for (int i=0; i<StateFlights.size(); i++) {
+      statesList[i] = StateFlights.get(i).toString();
+    }
+    DataList poopoo = new DataList();
+    poopoo.populateList(statesList);
+    return poopoo;
+  }
   public int getSize() {
     return datapointlist.size();
   }
-  
-  
-  
 }

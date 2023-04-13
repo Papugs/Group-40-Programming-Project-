@@ -5,19 +5,22 @@ PFont stdFont;
 PFont titleFont;
 PFont stdFont_20;
 PFont bigStdFont;
+PFont A_font_80;
 Movie myMov;
+String text;
 
 
-A_Widget widget1, widget2, widget3, widget4, widget5, widget6, widget7;
-Screen screen1, screen2, screen3;
+A_Widget widget1, widget2, widget3, widget4, widget5, widget6, widget7, widget10;
+Screen screen0,screen1, screen2, screen3, screen4, screen5;
 
 
 
 DataList data;
 DateRange dateRange;
 int screen;
-BarChart bc;
+int hoverCheck = 0;
 BarCharts bg;
+USA_MAP usamap;
 color black = color (0, 0, 0);
 color white = color (255, 255, 255);
 color peach = color (255, 218, 185);
@@ -28,28 +31,36 @@ color dim_grey = color(105, 105, 105);
 
 
 
+int dataImportCounter = 0;
+int runOnlyOnce =0;
+
 void settings() {
   size(SCREENX, SCREENY);
 }
 
 void setup() {
+  PImage icon = loadImage("icon.png");
+  surface.setIcon(icon);
+  
+  surface.setTitle("Sky's The Limit");
+  thread("movLoad");
   
 
-  myMov = new Movie(this, "planes.mp4");
-  myMov.loop();
 
-  
-  
   titleFont = loadFont("BookmanOldStyle-50.vlw");
   stdFont = loadFont("ArialRoundedMTBold-9.vlw");
   stdFont_20 = loadFont("ArialRoundedMTBold-20.vlw");
   bigStdFont = loadFont("Verdana-24.vlw");
+  A_font_80 = loadFont("ArialMT-80.vlw");
 
   textFont(stdFont);
-
+  
+  screen0 = new Screen(0, white, new ArrayList<A_Widget>()); // loading screen
   screen1 = new Screen(1, white, new ArrayList<A_Widget>()); // home screen
   screen2 = new Screen(2, white, new ArrayList<A_Widget>()); // boardingpass
   screen3 = new Screen(3, white, new ArrayList<A_Widget>()); // bar chart screen
+  screen4 = new Screen(4, white, new ArrayList<A_Widget>()); // Geo Map screen
+  screen5 = new Screen(5, white, new ArrayList<A_Widget>()); // About the team
 
   PImage homeButton = loadImage("icons8-home-page-24.png");
   /*
@@ -60,14 +71,18 @@ void setup() {
   screen1.addWidget(widget1);
   screen2.addWidget(widget1);
   screen3.addWidget(widget1);
+  screen4.addWidget(widget1);
+  screen5.addWidget(widget1);
 
 
   widget2 = new A_Widget(1, 002, EVENT_BUTTON2, 80, 30, 90, 25, "   MAIN DATA", stdFont, dim_grey, white, white, homeButton);//main data button defi (NOBERT SCREEN)
   screen1.addWidget(widget2);
   screen2.addWidget(widget2);
   screen3.addWidget(widget2);
-  
-  widget7 = new A_Widget(1, 007, EVENT_BUTTON7, 550, 125, 170, 50, " Clear Chart", bigStdFont, dim_grey, white, white, homeButton);
+  screen4.addWidget(widget2);
+  screen5.addWidget(widget2);
+
+  widget7 = new A_Widget(1, 007, EVENT_BUTTON7, 500, 115, 170, 50, " Clear Chart", bigStdFont, dim_grey, white, white, homeButton);
   screen3.addWidget(widget7);
 
 
@@ -75,10 +90,38 @@ void setup() {
   screen1.addWidget(widget3);
   screen2.addWidget(widget3);
   screen3.addWidget(widget3);
+  screen3.addWidget(widget3);
+  screen4.addWidget(widget3);
+  screen5.addWidget(widget3);
+  
+  widget4 = new A_Widget(1, 004, EVENT_BUTTON4, 300, 30, 90, 25, "     GEO MAP", stdFont, dim_grey, white, white, homeButton);//Geo Map button defi (PALAK SCREEN)
+  screen1.addWidget(widget4);
+  screen2.addWidget(widget4);
+  screen3.addWidget(widget4);
+  screen4.addWidget(widget4);
+  screen5.addWidget(widget4);
+  
+  
+  widget5 = new A_Widget(1, 005, EVENT_BUTTON5, 410, 30, 90, 25, "    THE TEAM", stdFont, dim_grey, white, white, homeButton);//Geo Map button defi (PALAK SCREEN)
+  screen1.addWidget(widget5);
+  screen2.addWidget(widget5);
+  screen3.addWidget(widget5);
+  screen4.addWidget(widget5);
+  screen5.addWidget(widget5);
+  
+  widget10 = new A_Widget(1, 010, EVENT_BUTTON10, 550, 32, 20, 20, "?", stdFont, dim_grey, white, white, homeButton);//Geo Map button defi (PALAK SCREEN)
+  screen1.addWidget(widget10);
+  screen2.addWidget(widget10);
+  screen3.addWidget(widget10);
+  screen4.addWidget(widget10);
+  screen5.addWidget(widget10);
+  
+  
+  
 
   widget6 = new A_Widget(1, 006, EVENT_BUTTON6, 650, 250, 150, 50, " GET STARTED", stdFont_20, dim_grey, white, white, homeButton);//bar graph button defi (Nobert SCREEN)
   screen1.addWidget(widget6);
-  
+
   screen =1;
 
 
@@ -86,52 +129,130 @@ void setup() {
   //String[] flightsFull = loadStrings("flights_full.csv");
   //String[] flights100k = loadStrings("flights100k.csv");
   //String[] flights10k = loadStrings("flights10k.csv");
-  flights2k = loadStrings("flights2k.csv");
-
-  data = new DataList();
-  data.populateList(flights2k);
-  dateRange = new DateRange(90);
-  screen = 1;
-
-
-  String[] f = {"JFK", "MDW", "LAX", "DCA"};
-  int[] ff = new int[f.length];
-
-  for (int i = 0; i<f.length; i++) {
-    ff[i] = data.getFlightByAirport(f[i]).getFlightByLateness(5).getSize();
-  }
-
-  bc = new BarChart(50, 50, 200, 150, f, ff, "Late flights by airport");
-  bg = new BarCharts(this);
-  
-
+  //flights2k = loadStrings("flights2k.csv");
+}
+void movLoad() {
+  myMov = new Movie(this, "planes.mp4");
+  myMov.loop();
 }
 
-void draw() {
-  background(100, 100, 100);
-  if (screen == 1) {
-    if (myMov.available()) {
-      myMov.read();
-  }
-    image(myMov, 0, 0);
-    screen1.draw();
-    
-  } else if (screen == 2) {
-    
-    dateRange.draw();
-    screen2.draw();
-  } else if(screen == 3) {
-    screen3.draw();
-    bg.draw();
-  }
-  
-  if(screen != 3) {
-    bg.dropdown.setBarVisible(false);
-  }
+void remSetup() {
+  if (flights2k !=null) {
 
+    data = new DataList();
+    data.populateList(flights2k);
+    dateRange = new DateRange(90);
+    screen = 1;
+
+
+    bg = new BarCharts(this);
+      usamap = new USA_MAP();
+
+  }
+}
+
+
+void draw() {
+
+  thread("dataLoad");
+
+  screen0.draw();
+
+  if (flights2k !=null & myMov != null ) {
+
+    if (runOnlyOnce == 0) remSetup();
+    runOnlyOnce =1;
+
+    background(100, 100, 100);
+    if (screen == 1) {
+      if (myMov.available()) {
+        myMov.read();
+      }
+      image(myMov, 0, 0);
+      screen1.draw();
+      if (hoverCheck == 1){
+        noStroke();
+        fill(255,255,255,190);
+        rect(555,45, 200, 150);
+        text = "This is the Home screen, it will redirect you to other graphs. \n press the buttons on the blue bar to explore";
+        fill(0);
+        textFont(A_font_80);
+        textSize(18);
+        text(text, 560, 50, 195, 395);
+        
+      }
+    } else if (screen == 2) {
+
+      dateRange.draw();
+      screen2.draw();
+      if (hoverCheck == 1){
+        noStroke();
+        fill(255,255,255,245);
+        rect(555,45, 200, 250);
+        text = "Date Range is a search engine that lets you find flights within a given start date and end date. These are displayed visually as boarding passes. You can swap between another screen, which shows a heat map of the flights on those days over the span of a day.";
+        fill(0);
+        textFont(A_font_80);
+        textSize(18);
+        text(text, 560, 50, 195, 395);
+        
+      }
+    } else if (screen == 3) {
+      screen3.draw();
+      bg.draw();
+      if (hoverCheck == 1){
+        noStroke();
+        fill(255,255,255,190);
+        rect(555,45, 200, 350);
+        text = "This page shows late flights by departing airport. Use the dropdown menu to select an airport and automatically add it to the bar graph. Use the text box to filter the flights shown to only ones that were late by at least the inputted time. By default this value is 5 minutes.";
+        fill(0);
+        textFont(A_font_80);
+        textSize(18);
+        text(text, 560, 50, 195, 395);
+        
+      }
+    } else if(screen == 4){
+      screen4.draw(); 
+      usamap.draw();
+      if (hoverCheck == 1){
+        noStroke();
+        fill(255,255,255,190);
+        rect(555,45, 200, 350);
+        text = "Displays the flight information from a given state of USA by letting user click on the button includes widgets that expand and deexpand and display information like date, arrival place and more.";
+        fill(0);
+        textFont(A_font_80);
+        textSize(18);
+        text(text, 560, 50, 195, 395);
+        
+      }
+    } else if(screen == 5){
+      screen5.draw(); 
+      if (hoverCheck == 1){
+        noStroke();
+        fill(255,255,255,190);
+        rect(555,45, 200, 350);
+        text = "About the Project and the team.";
+        fill(0);
+        textFont(A_font_80);
+        textSize(18);
+        text(text, 560, 50, 195, 395);
+        
+      }
+    }
+
+    if (screen != 3) {
+      bg.dropdown.setBarVisible(false);
+    }
+  }
+}
+
+
+void dataLoad() {
+
+  flights2k = loadStrings("flights100k.csv");
 }
 
 void mousePressed() {
+  usamap.mousePressed();
   dateRange.mousePressed();
   int event;
   if (screen == 1) {
@@ -150,10 +271,24 @@ void mousePressed() {
       screen = 3;
       println("Button3 is pressed.");
       break;
+    
+    case EVENT_BUTTON4:
+      //fill
+      screen = 4;
+      println("GEO MAP button pressed");
+      break;
+    case EVENT_BUTTON5:
+      screen = 5;
+      println("about button pressed");
+      break;
 
     case EVENT_BUTTON6:
       screen = 2;
       println("Button6 is pressed.");
+      break;
+      
+    case EVENT_BUTTON10:
+    
       break;
     }
   } else if ( screen == 2) {
@@ -172,12 +307,30 @@ void mousePressed() {
       screen = 3;
       println("Button3 is pressed.");
       break;
+    
+    case EVENT_BUTTON4:
+      //fill
+      screen =4;
+      println("GEO MAP button pressed");
+      break;
+    
+    case EVENT_BUTTON5:
+      screen = 5;
+      println("about button pressed");
+      break;
+      
+      
 
     case EVENT_BUTTON6:
       println("Button6 is pressed.");
       break;
+      
+    case EVENT_BUTTON10:
+    
+      break;
     }
-  }else if ( screen == 3) {
+  } else if ( screen == 3) {
+    bg.mousePressed();
     event = screen3.getEvent(mouseX, mouseY);
     switch(event) {
     case EVENT_BUTTON1:
@@ -193,69 +346,173 @@ void mousePressed() {
       screen = 3;
       println("Button3 is pressed.");
       break;
+      
+    case EVENT_BUTTON4:
+      //fill
+      screen = 4;
+      println("GEO MAP button pressed");
+      break; 
+    
+    case EVENT_BUTTON5:
+      //fill 
+      screen = 5;
+      println("about button pressed");
+      break;  
 
     case EVENT_BUTTON6:
       println("Button6 is pressed.");
       break;
-      
+
     case EVENT_BUTTON7:
       println("Button7 is pressed.");
       bg.resetBarChart();
       break;
+    case EVENT_BUTTON10:
+    
+      break;  
+    }
+  }else{
+    event = screen3.getEvent(mouseX, mouseY);
+    switch(event) {
+    case EVENT_BUTTON1:
+      screen = 1;
+      println("Home Button is pressed.");
+      break;
+    case EVENT_BUTTON2:
+      screen = 2;
+      println("Button2 is pressed.");
+      break;
+
+    case EVENT_BUTTON3:
+      screen = 3;
+      println("Button3 is pressed.");
+      break;
+      
+    case EVENT_BUTTON4:
+      //fill
+      screen = 4;
+      println("GEO MAP button pressed");
+      break; 
+    
+    case EVENT_BUTTON5:
+      //fill 
+      screen = 5;
+      println("about button pressed");
+      break;  
+
+    case EVENT_BUTTON6:
+      println("Button6 is pressed.");
+      break;
+
+    case EVENT_BUTTON7:
+      println("Button7 is pressed.");
+      bg.resetBarChart();
+      break;
+      
+    case EVENT_BUTTON10:
+    
+      break;  
     }
   }
 }
-  void mouseMoved() {
+void mouseMoved() {
+  if (flights2k !=null & myMov != null ){
+  
+  
     dateRange.mouseMoved();
     int event;
     if (screen == 1) {
       event = screen1.getEvent(mouseX, mouseY);
-    }else if(screen ==2){
-       event = screen2.getEvent(mouseX, mouseY); 
-    }else if (screen ==  3) {
-       event = screen3.getEvent(mouseX, mouseY); 
-    }else{
-       event = screen1.getEvent(mouseX, mouseY);
+    } else if (screen ==2) {
+      event = screen2.getEvent(mouseX, mouseY);
+    } else if (screen ==  3) {
+      event = screen3.getEvent(mouseX, mouseY);
+    } else {
+      event = screen1.getEvent(mouseX, mouseY);
     }
     switch(event) {
-      case EVENT_BUTTON1:
-        widget1.strokeColor = color(0);
-        break;
-      case EVENT_BUTTON2:
-        widget2.widgetColor = silver;
-        widget2.strokeColor = color(0);
-        break;
-
-      case EVENT_BUTTON3:
-        widget3.widgetColor = silver;
-        widget3.strokeColor = color(0);
-        break;
-
-      case EVENT_BUTTON6:
-        widget6.widgetColor = silver;
-        widget6.strokeColor = color(0);
-        break;
-        
-      case EVENT_BUTTON7:
-        widget7.widgetColor = silver;
-        widget7.strokeColor = color(0);
-        break;
-
-      case EVENT_NULL:
-        widget1.strokeColor = color(255);
-
-        widget2.widgetColor = dim_grey;
-        widget2.strokeColor = color(255);
-
-        widget3.widgetColor = dim_grey;
-        widget3.strokeColor = color(255);
-
-        widget6.widgetColor = dim_grey;
-        widget6.strokeColor = color(255);
-        
-        widget7.widgetColor = dim_grey;
-        widget7.strokeColor = color(255);
-
-        break;
-      }
+    case EVENT_BUTTON1:
+      widget1.strokeColor = color(0);
+      break;
+    case EVENT_BUTTON2:
+      widget2.widgetColor = silver;
+      widget2.strokeColor = color(0);
+      break;
+  
+    case EVENT_BUTTON3:
+      widget3.widgetColor = silver;
+      widget3.strokeColor = color(0);
+      break;
+      
+    case EVENT_BUTTON4:
+      widget4.widgetColor = silver;
+      widget4.strokeColor = color(0);
+      break;
+    
+    case EVENT_BUTTON5:
+      widget5.widgetColor = silver;
+      widget5.strokeColor = color(0);
+      break;
+     
+  
+    case EVENT_BUTTON6:
+      widget6.widgetColor = silver;
+      widget6.strokeColor = color(0);
+      break;
+  
+    case EVENT_BUTTON7:
+      widget7.widgetColor = silver;
+      widget7.strokeColor = color(0);
+      break;
+      
+    case EVENT_BUTTON10:
+      widget10.widgetColor = silver;
+      widget10.strokeColor = color(0);
+      hoverCheck = 1;
+      break;  
+  
+    case EVENT_NULL:
+      widget1.strokeColor = color(255);
+  
+      widget2.widgetColor = dim_grey;
+      widget2.strokeColor = color(255);
+  
+      widget3.widgetColor = dim_grey;
+      widget3.strokeColor = color(255);
+  
+      widget6.widgetColor = dim_grey;
+      widget6.strokeColor = color(255);
+  
+      widget7.widgetColor = dim_grey;
+      widget7.strokeColor = color(255);
+      
+      widget4.widgetColor = dim_grey;
+      widget4.strokeColor = color(255);
+     
+      
+      widget5.widgetColor = dim_grey;
+      widget5.strokeColor = color(255);
+      
+      widget10.widgetColor = dim_grey;
+      widget10.strokeColor = color(255);
+      
+      hoverCheck = 0;
+      break;
+      
+    }
+  
+  
   }
+}
+
+public void keyPressed() {
+  if (screen == 3) {
+    bg.keyPressed();
+  }
+}
+
+public void keyTyped() {
+  if (screen == 3) {
+    bg.keyTyped();
+  }
+}

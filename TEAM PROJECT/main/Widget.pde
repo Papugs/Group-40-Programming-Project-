@@ -242,11 +242,20 @@ void draw(){
   strokeWeight(2);
   rect(x,y,width,height,35); //35 is rounded corners radius
   fill(labelColor);
-  if(widgetID != 7) {
-    text(label, x + GAP + 3, y+GAP+6);
-  } else {
-    text(label, x + GAP + 3, y+GAP+20);
+  
+  //specific widget stuff
+  if (widgetID == 7){
+     text(label, x + GAP + 3, y+GAP+20); 
+  }else if(widgetID == 6){
+     text(label, x , y+GAP+20); 
+  }else if(widgetID == 010){
+     text( label, x+8 , y+14);
   }
+  else{
+    text(label, x + GAP + 3, y+GAP+6);
+  }
+  
+  
  }
  if (widgetType == 2){
   textFont(widgetFont);
