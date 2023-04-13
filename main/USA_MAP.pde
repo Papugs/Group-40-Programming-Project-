@@ -1,15 +1,16 @@
 public class USA_MAP {
-int originalx;
-int originaly;
+  int originalx;
+  int originaly;
   DataList thedate;
   PImage map;
   PImage cross;
   ArrayList<A_Widget> buttonlist;
   A_Widget crossWidget;
+  DataList stateflight;
   PFont usafont;
   ArrayList<String> r;
   int textwidth;
-  boolean expand;
+  boolean expand, first;
   boolean show;
   int indexButton;
   int sizex;
@@ -17,16 +18,25 @@ int originaly;
   int dowedexpand= 1;
   int crossevent=2000;
   int crossid;
+  int offset;
+  int[] offsets;
+  float mouse;
+
+
+
   public USA_MAP() {
     sizex=20;
     sizey=20;
     r = new ArrayList<String>();
+    offset = 0;
+    first = true;
     map = loadImage("map.png");
     cross= loadImage("CROSS.png");
     buttonlist = new ArrayList<A_Widget>();
     usafont = loadFont("AcademyEngravedLetPlain-15.vlw");
-    crossWidget = new A_Widget(1, crossid, crossevent, 1143, 30, 30, 30, "X", usafont, dim_grey, white, white, cross);
+    crossWidget = new A_Widget(1, crossid, crossevent, 1143, 130, 30, 30, "X", usafont, dim_grey, white, white, cross);
     thedate = data;
+    mouse = 0;
     for (int i = 0; i < 48; i++) {
       buttonlist.add(new A_Widget(1, i, i, int(XPOSITION[i]), int(YPOSITION[i]), sizex, sizey, "", usafont, dim_grey, white, white, map) );
       println(i);
@@ -55,17 +65,30 @@ int originaly;
       if (r != null && r.size() != 0 && show) {
         crossWidget.draw();
         int textwidth = 150;
-        for (String flight : r) {
-          flight= flight.replaceAll(",", "      ");
-          text("FL_DATE", 30, 110);
-          text("DEST", 912, 110);
-          text("DEST(ABR)", 711, 110);
-          text("ORIGIN", 282, 110);
-          text("ORIGIN(ABR)", 519, 110);
+        int offset = 60;
+        int i = 0;
+        for (DataPoint flight : stateflight.datapointlist) {\
+          text("FL_DATE", 30, 120);
+          text("DEST", 912, 120);
+          text("DEST(ABR)", 711, 120);
+          text("ORIGIN", 282, 120);
+          text("ORIGIN(ABR)", 519, 120);
+          mouse -= mouseWheel(mouseEvent)/5;
 
-          text(flight, 0, textwidth);
-          textwidth += 30;
+          if (first) {
+            offset += 30;
+            offsets[i] = offset;
+          }
+          if (110+offsets[i]+mouse > 120) {
+            text(flight.getData(0), 30, 110+offsets[i]+mouse);
+            text(flight.getData(4), 282, 110+offsets[i]+mouse);
+            text(flight.getData(5), 912, 110+offsets[i]+mouse);
+            text(flight.getData(8), 711, 110+offsets[i]+mouse);
+            text(flight.getData(9), 519, 110+offsets[i]+mouse);
+          }
+          i++;
         }
+        first = false;
       } else if (show) {
         crossWidget.draw();
         text("NO FLIGHTS FROM THIS STATE SORRY", 400, 400);
@@ -88,7 +111,8 @@ int originaly;
       indexButton = event;
       show = true;
       expand = true;
-      DataList stateflight = thedate.getFlightByState(Stateabb[event]);
+      stateflight = thedate.getFlightByState(Stateabb[event]);
+      offsets = new int[stateflight.datapointlist.size()];
       if (stateflight.getSize() != 0) {
         r = stateflight.displayAll();
       } else {
@@ -101,6 +125,9 @@ int originaly;
       show = false;
       dowedexpand=2;
     }
+  }
+  float mouseWheel(MouseEvent event) {
+    return event.getCount();
   }
 
 
@@ -119,30 +146,29 @@ int originaly;
     }
   }
   void dexpandButton() {
-  int targetSizex = 20;
-  int targetSizey = 20;
+    int targetSizex = 20;
+    int targetSizey = 20;
 
-  if (buttonlist.get(indexButton).x < int(XPOSITION[indexButton])) {
-    buttonlist.get(indexButton).x += min(10, int(XPOSITION[indexButton]) - buttonlist.get(indexButton).x);
+    if (buttonlist.get(indexButton).x < int(XPOSITION[indexButton])) {
+      buttonlist.get(indexButton).x += min(20, int(XPOSITION[indexButton]) - buttonlist.get(indexButton).x);
+    }
+
+    if (buttonlist.get(indexButton).width > targetSizex) {
+      buttonlist.get(indexButton).width -= 20;
+    }
+
+    if (buttonlist.get(indexButton).y < int(YPOSITION[indexButton])) {
+      buttonlist.get(indexButton).y += min(10, int(YPOSITION[indexButton]) - buttonlist.get(indexButton).y);
+    }
+
+    if (buttonlist.get(indexButton).height > targetSizey) {
+      buttonlist.get(indexButton).height -= 20;
+    }
+
+    if (buttonlist.get(indexButton).width <= targetSizex && buttonlist.get(indexButton).height <= targetSizey) {
+      expand = false;
+      show = false;
+      dowedexpand = 1;
+    }
   }
-
-  if (buttonlist.get(indexButton).width > targetSizex) {
-    buttonlist.get(indexButton).width -= 20;
-  }
-
-  if (buttonlist.get(indexButton).y < int(YPOSITION[indexButton])) {
-    buttonlist.get(indexButton).y += min(10, int(YPOSITION[indexButton]) - buttonlist.get(indexButton).y);
-  }
-
-  if (buttonlist.get(indexButton).height > targetSizey) {
-    buttonlist.get(indexButton).height -= 20;
-  }
-
-  if (buttonlist.get(indexButton).width <= targetSizex && buttonlist.get(indexButton).height <= targetSizey) {
-    expand = false;
-    show = false;
-    dowedexpand = 1;
-  }
-}
-
 }
