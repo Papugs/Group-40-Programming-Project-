@@ -248,6 +248,8 @@ void draw(){
      text(label, x + GAP + 3, y+GAP+20); 
   }else if(widgetID == 6){
      text(label, x , y+GAP+20); 
+  }else if(widgetID == 010){
+     text( label, x+8 , y+14);
   }
   else{
     text(label, x + GAP + 3, y+GAP+6);

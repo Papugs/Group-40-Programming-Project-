@@ -5,7 +5,9 @@ PFont stdFont;
 PFont titleFont;
 PFont stdFont_20;
 PFont bigStdFont;
+PFont A_font_80;
 Movie myMov;
+String text;
 
 
 A_Widget widget1, widget2, widget3, widget4, widget5, widget6, widget7, widget10;
@@ -16,6 +18,7 @@ Screen screen0,screen1, screen2, screen3, screen4, screen5;
 DataList data;
 DateRange dateRange;
 int screen;
+int hoverCheck = 0;
 BarCharts bg;
 USA_MAP usamap;
 color black = color (0, 0, 0);
@@ -48,6 +51,7 @@ void setup() {
   stdFont = loadFont("ArialRoundedMTBold-9.vlw");
   stdFont_20 = loadFont("ArialRoundedMTBold-20.vlw");
   bigStdFont = loadFont("Verdana-24.vlw");
+  A_font_80 = loadFont("ArialMT-80.vlw");
 
   textFont(stdFont);
   
@@ -166,18 +170,73 @@ void draw() {
       }
       image(myMov, 0, 0);
       screen1.draw();
+      if (hoverCheck == 1){
+        noStroke();
+        fill(255,255,255,190);
+        rect(555,45, 200, 150);
+        text = "This is the Home screen, it will redirect you to other graphs. \n press the buttons on the blue bar to explore";
+        fill(0);
+        textFont(A_font_80);
+        textSize(18);
+        text(text, 560, 50, 195, 395);
+        
+      }
     } else if (screen == 2) {
 
       dateRange.draw();
       screen2.draw();
+      if (hoverCheck == 1){
+        noStroke();
+        fill(255,255,255,245);
+        rect(555,45, 200, 250);
+        text = "Date Range is a search engine that lets you find flights within a given start date and end date. These are displayed visually as boarding passes. You can swap between another screen, which shows a heat map of the flights on those days over the span of a day.";
+        fill(0);
+        textFont(A_font_80);
+        textSize(18);
+        text(text, 560, 50, 195, 395);
+        
+      }
     } else if (screen == 3) {
       screen3.draw();
       bg.draw();
+      if (hoverCheck == 1){
+        noStroke();
+        fill(255,255,255,190);
+        rect(555,45, 200, 350);
+        text = "This page shows late flights by departing airport. Use the dropdown menu to select an airport and automatically add it to the bar graph. Use the text box to filter the flights shown to only ones that were late by at least the inputted time. By default this value is 5 minutes.";
+        fill(0);
+        textFont(A_font_80);
+        textSize(18);
+        text(text, 560, 50, 195, 395);
+        
+      }
     } else if(screen == 4){
       screen4.draw(); 
       usamap.draw();
+      if (hoverCheck == 1){
+        noStroke();
+        fill(255,255,255,190);
+        rect(555,45, 200, 350);
+        text = "Displays the flight information from a given state of USA by letting user click on the button includes widgets that expand and deexpand and display information like date, arrival place and more.";
+        fill(0);
+        textFont(A_font_80);
+        textSize(18);
+        text(text, 560, 50, 195, 395);
+        
+      }
     } else if(screen == 5){
       screen5.draw(); 
+      if (hoverCheck == 1){
+        noStroke();
+        fill(255,255,255,190);
+        rect(555,45, 200, 350);
+        text = "About the Project and the team.";
+        fill(0);
+        textFont(A_font_80);
+        textSize(18);
+        text(text, 560, 50, 195, 395);
+        
+      }
     }
 
     if (screen != 3) {
@@ -189,7 +248,7 @@ void draw() {
 
 void dataLoad() {
 
-  flights2k = loadStrings("flights2k.csv");
+  flights2k = loadStrings("flights100k.csv");
 }
 
 void mousePressed() {
@@ -409,6 +468,7 @@ void mouseMoved() {
     case EVENT_BUTTON10:
       widget10.widgetColor = silver;
       widget10.strokeColor = color(0);
+      hoverCheck = 1;
       break;  
   
     case EVENT_NULL:
@@ -435,6 +495,8 @@ void mouseMoved() {
       
       widget10.widgetColor = dim_grey;
       widget10.strokeColor = color(255);
+      
+      hoverCheck = 0;
       break;
       
     }
