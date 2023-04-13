@@ -1,5 +1,5 @@
 import processing.video.*;
-
+USA_MAP USAMAP;
 String[] flights2k;
 PFont stdFont;
 PFont titleFont;
@@ -124,69 +124,49 @@ void movLoad() {
 
 void remSetup() {
   if (flights2k !=null) {
+  flights2k = loadStrings("flights2k.csv");
 
-    data = new DataList();
-    data.populateList(flights2k);
-    dateRange = new DateRange(90);
-    screen = 1;
+  data = new DataList();
+  data.populateList(flights2k);
+  dateRange = new DateRange(90);
+  USAMAP = new USA_MAP();
+  screen = 4;
 
 
-    String[] f = {"JFK", "MDW", "LAX", "DCA"};
-    int[] ff = new int[f.length];
-
-    for (int i = 0; i<f.length; i++) {
-      ff[i] = data.getFlightByAirport(f[i]).getFlightByLateness(5).getSize();
-    }
-
-    bg = new BarCharts(this);
-  }
 }
-
 
 void draw() {
-
-  thread("dataLoad");
-
-  screen0.draw();
-
-  if (flights2k !=null & myMov != null ) {
-
-    if (runOnlyOnce == 0) remSetup();
-    runOnlyOnce =1;
-
-    background(100, 100, 100);
-    if (screen == 1) {
-      if (myMov.available()) {
-        myMov.read();
-      }
-      image(myMov, 0, 0);
-      screen1.draw();
-    } else if (screen == 2) {
-
-      dateRange.draw();
-      screen2.draw();
-    } else if (screen == 3) {
-      screen3.draw();
-      bg.draw();
-    } else if(screen == 4){
-      screen4.draw(); 
-    } else if(screen == 5){
-      screen5.draw(); 
-    }
-
-    if (screen != 3) {
-      bg.dropdown.setBarVisible(false);
-    }
+  background(100, 100, 100);
+  if (screen == 1) {
+    if (myMov.available()) {
+      myMov.read();
   }
-}
-
-
-void dataLoad() {
+    image(myMov, 0, 0);
+    screen1.draw();
+    
+  } else if (screen == 2) {
+    
+    dateRange.draw();
+    screen2.draw();
+  } else if(screen == 3) {
+    screen3.draw();
+ 
+    bg.draw();
+ 
+    //bg.draw();
+  } else if(screen==4){
+    USAMAP.draw();
+  }
+  
+  if(screen != 3) {
+    bg.dropdown.setBarVisible(false);
+  }
 
   flights2k = loadStrings("flights2k.csv");
 }
 
 void mousePressed() {
+  USAMAP.mousePressed();
   dateRange.mousePressed();
   int event;
   if (screen == 1) {
@@ -334,10 +314,13 @@ void mousePressed() {
     }
   }
 }
+
 void mouseMoved() {
   if (flights2k !=null & myMov != null ){
   
   
+
+  void mouseMoved() {
     dateRange.mouseMoved();
     int event;
     if (screen == 1) {

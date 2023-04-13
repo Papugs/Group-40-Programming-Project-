@@ -124,18 +124,16 @@ class DataList { //<>//
     Stateabb = " " + Stateabb + "\"";
     for (DataPoint dp : datapointlist) {
       if (dp.getData(5).compareTo(Stateabb) == 0) {
-        String space= "                                         ";
-        String column1Data = dp.getData(0);
-       String column4Data = dp.getData(4);
-        String column5Data = dp.getData(5);
-        String column8Data = dp.getData(8);
-        String column9Data = dp.getData(9);
-      String newDataString = column1Data + space+ column4Data+space+column5Data + space + column8Data+space+column9Data + space ;
-      DataPoint newDataPoint = new DataPoint(newDataString);
-        StateFlights.add(newDataPoint);
+        StateFlights.add(dp);
       }
     }
-    return new DataList(StateFlights);
+    String [] statesList = new String[StateFlights.size()];
+    for (int i=0; i<StateFlights.size(); i++) {
+      statesList[i] = StateFlights.get(i).toString();
+    }
+    DataList poopoo = new DataList();
+    poopoo.populateList(statesList);
+    return poopoo;
   }
   public int getSize() {
     return datapointlist.size();
