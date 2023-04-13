@@ -12,7 +12,7 @@ public class BarCharts {
      
      public BarCharts(PApplet p) {
           cp5 = new ControlP5(p);
-          dropdown = cp5.addDropdownList("dropdown").setPosition(100, 125).setSize(400, 200);
+          dropdown = cp5.addDropdownList("dropdown").setPosition(100, 120).setSize(400, 200);
           dropdown.setBarHeight(40);
           addItems(dropdown, airportNames);
           dropdown.setBarVisible(false);
@@ -20,7 +20,7 @@ public class BarCharts {
           dropdown.setItemHeight(40);
           dropdown.close();
           
-          tb = new TextBox(1000, 120, 150, 50, "How late? ");
+          tb = new TextBox(1050, 125, 150, 50, "How late? ");
           
           dropdown.addCallback(new CallbackListener() {
             public void controlEvent(CallbackEvent event) {
@@ -36,6 +36,7 @@ public class BarCharts {
      
      public void draw() {
        textFont(bigStdFont);
+       
        if(tb.pollForNewNumber()) {
          lateness = tb.getNewNumber();
          updateBarChart();
@@ -45,9 +46,9 @@ public class BarCharts {
          dropdown.setBarVisible(true);
          if(bc != null) {
            fill(100);
-           text("Get flights that are late by: ", 675, 150);
-           tb.draw();
+           text("Show flights that are late by: ", 700, 150);
            bc.draw();
+           tb.draw();
          } else {
            fill(100);
            text("Select an airport from the dropdown menu to get started", 300, 400);
