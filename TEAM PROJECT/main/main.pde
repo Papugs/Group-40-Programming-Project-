@@ -1,5 +1,5 @@
 import processing.video.*;
-USA_MAP USAMAP;
+
 String[] flights2k;
 PFont stdFont;
 PFont titleFont;
@@ -8,7 +8,7 @@ PFont bigStdFont;
 Movie myMov;
 
 
-A_Widget widget1, widget2, widget3, widget4, widget5, widget6, widget7;
+A_Widget widget1, widget2, widget3, widget4, widget5, widget6, widget7, widget10;
 Screen screen0,screen1, screen2, screen3, screen4, screen5;
 
 
@@ -17,6 +17,7 @@ DataList data;
 DateRange dateRange;
 int screen;
 BarCharts bg;
+USA_MAP usamap;
 color black = color (0, 0, 0);
 color white = color (255, 255, 255);
 color peach = color (255, 218, 185);
@@ -104,6 +105,15 @@ void setup() {
   screen4.addWidget(widget5);
   screen5.addWidget(widget5);
   
+  widget10 = new A_Widget(1, 010, EVENT_BUTTON10, 550, 32, 20, 20, "?", stdFont, dim_grey, white, white, homeButton);//Geo Map button defi (PALAK SCREEN)
+  screen1.addWidget(widget10);
+  screen2.addWidget(widget10);
+  screen3.addWidget(widget10);
+  screen4.addWidget(widget10);
+  screen5.addWidget(widget10);
+  
+  
+  
 
   widget6 = new A_Widget(1, 006, EVENT_BUTTON6, 650, 250, 150, 50, " GET STARTED", stdFont_20, dim_grey, white, white, homeButton);//bar graph button defi (Nobert SCREEN)
   screen1.addWidget(widget6);
@@ -124,49 +134,66 @@ void movLoad() {
 
 void remSetup() {
   if (flights2k !=null) {
-  flights2k = loadStrings("flights2k.csv");
 
-  data = new DataList();
-  data.populateList(flights2k);
-  dateRange = new DateRange(90);
-  USAMAP = new USA_MAP();
-  screen = 4;
+    data = new DataList();
+    data.populateList(flights2k);
+    dateRange = new DateRange(90);
+    screen = 1;
 
 
+    bg = new BarCharts(this);
+      usamap = new USA_MAP();
+
+  }
 }
 
+
 void draw() {
-  background(100, 100, 100);
-  if (screen == 1) {
-    if (myMov.available()) {
-      myMov.read();
+
+  thread("dataLoad");
+
+  screen0.draw();
+
+  if (flights2k !=null & myMov != null ) {
+
+    if (runOnlyOnce == 0) remSetup();
+    runOnlyOnce =1;
+
+    background(100, 100, 100);
+    if (screen == 1) {
+      if (myMov.available()) {
+        myMov.read();
+      }
+      image(myMov, 0, 0);
+      screen1.draw();
+    } else if (screen == 2) {
+
+      dateRange.draw();
+      screen2.draw();
+    } else if (screen == 3) {
+      screen3.draw();
+      bg.draw();
+    } else if(screen == 4){
+      screen4.draw(); 
+      usamap.draw();
+    } else if(screen == 5){
+      screen5.draw(); 
+    }
+
+    if (screen != 3) {
+      bg.dropdown.setBarVisible(false);
+    }
   }
-    image(myMov, 0, 0);
-    screen1.draw();
-    
-  } else if (screen == 2) {
-    
-    dateRange.draw();
-    screen2.draw();
-  } else if(screen == 3) {
-    screen3.draw();
- 
-    bg.draw();
- 
-    //bg.draw();
-  } else if(screen==4){
-    USAMAP.draw();
-  }
-  
-  if(screen != 3) {
-    bg.dropdown.setBarVisible(false);
-  }
+}
+
+
+void dataLoad() {
 
   flights2k = loadStrings("flights2k.csv");
 }
 
 void mousePressed() {
-  USAMAP.mousePressed();
+  usamap.mousePressed();
   dateRange.mousePressed();
   int event;
   if (screen == 1) {
@@ -199,6 +226,10 @@ void mousePressed() {
     case EVENT_BUTTON6:
       screen = 2;
       println("Button6 is pressed.");
+      break;
+      
+    case EVENT_BUTTON10:
+    
       break;
     }
   } else if ( screen == 2) {
@@ -233,6 +264,10 @@ void mousePressed() {
 
     case EVENT_BUTTON6:
       println("Button6 is pressed.");
+      break;
+      
+    case EVENT_BUTTON10:
+    
       break;
     }
   } else if ( screen == 3) {
@@ -273,6 +308,9 @@ void mousePressed() {
       println("Button7 is pressed.");
       bg.resetBarChart();
       break;
+    case EVENT_BUTTON10:
+    
+      break;  
     }
   }else{
     event = screen3.getEvent(mouseX, mouseY);
@@ -311,16 +349,17 @@ void mousePressed() {
       println("Button7 is pressed.");
       bg.resetBarChart();
       break;
+      
+    case EVENT_BUTTON10:
+    
+      break;  
     }
   }
 }
-
 void mouseMoved() {
   if (flights2k !=null & myMov != null ){
   
   
-
-  void mouseMoved() {
     dateRange.mouseMoved();
     int event;
     if (screen == 1) {
@@ -366,6 +405,11 @@ void mouseMoved() {
       widget7.widgetColor = silver;
       widget7.strokeColor = color(0);
       break;
+      
+    case EVENT_BUTTON10:
+      widget10.widgetColor = silver;
+      widget10.strokeColor = color(0);
+      break;  
   
     case EVENT_NULL:
       widget1.strokeColor = color(255);
@@ -388,6 +432,9 @@ void mouseMoved() {
       
       widget5.widgetColor = dim_grey;
       widget5.strokeColor = color(255);
+      
+      widget10.widgetColor = dim_grey;
+      widget10.strokeColor = color(255);
       break;
       
     }
