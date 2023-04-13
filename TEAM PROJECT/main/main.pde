@@ -1,5 +1,5 @@
 import processing.video.*;
-
+USA_MAP USAMAP;
 String[] flights2k;
 PFont stdFont;
 PFont titleFont;
@@ -115,6 +115,7 @@ void setup() {
   //String[] flightsFull = loadStrings("flights_full.csv");
   //String[] flights100k = loadStrings("flights100k.csv");
   //String[] flights10k = loadStrings("flights10k.csv");
+<<<<<<< HEAD
   //flights2k = loadStrings("flights2k.csv");
 }
 void movLoad() {
@@ -124,6 +125,45 @@ void movLoad() {
 
 void remSetup() {
   if (flights2k !=null) {
+=======
+  flights2k = loadStrings("flights2k.csv");
+
+  data = new DataList();
+  data.populateList(flights2k);
+  dateRange = new DateRange(90);
+  USAMAP = new USA_MAP();
+  screen = 4;
+
+
+}
+
+void draw() {
+  background(100, 100, 100);
+  if (screen == 1) {
+    if (myMov.available()) {
+      myMov.read();
+  }
+    image(myMov, 0, 0);
+    screen1.draw();
+    
+  } else if (screen == 2) {
+    
+    dateRange.draw();
+    screen2.draw();
+  } else if(screen == 3) {
+    screen3.draw();
+ 
+    bg.draw();
+ 
+    //bg.draw();
+  } else if(screen==4){
+    USAMAP.draw();
+  }
+  
+  //if(screen != 3) {
+  //  bg.dropdown.setBarVisible(false);
+  //}
+>>>>>>> 570683890154a5cdef836257b6dfbb91c4786282
 
     data = new DataList();
     data.populateList(flights2k);
@@ -187,6 +227,7 @@ void dataLoad() {
 }
 
 void mousePressed() {
+  USAMAP.mousePressed();
   dateRange.mousePressed();
   int event;
   if (screen == 1) {
@@ -334,10 +375,15 @@ void mousePressed() {
     }
   }
 }
+<<<<<<< HEAD
 void mouseMoved() {
   if (flights2k !=null & myMov != null ){
   
   
+=======
+  void mouseMoved() {
+    
+>>>>>>> 570683890154a5cdef836257b6dfbb91c4786282
     dateRange.mouseMoved();
     int event;
     if (screen == 1) {
