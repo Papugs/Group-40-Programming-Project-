@@ -1,4 +1,6 @@
+// created by palak 
 public class USA_MAP {
+  // intialising all the ariables
   int originalx;
   int originaly;
   DataList thedate;
@@ -23,7 +25,7 @@ public class USA_MAP {
   float mouse;
 
 
-
+// the constructor intialised to set up the values 
   public USA_MAP() {
     sizex=20;
     sizey=20;
@@ -47,7 +49,7 @@ public class USA_MAP {
     expand = false;
   }
 
-
+// to make the maps the widgets
   void draw() {
     image(map, 100, 100, SCREENX/2+200, SCREENY/2+200);
     fill(255, 0, 0, 100);
@@ -96,9 +98,8 @@ public class USA_MAP {
       }
     }
   }
-
+// to make the cases and add switch statements 
   void mousePressed() {
-    println(mouseX, mouseY);
     int event = 0;
     first = true;
     offset = 0;
@@ -132,7 +133,7 @@ public class USA_MAP {
   }
 
 
-
+// to expand the widgets once clicked 
   void expandButton() {
     sizex = int(buttonlist.get(indexButton).width);
     sizey = int(buttonlist.get(indexButton).height);
@@ -146,6 +147,8 @@ public class USA_MAP {
       show= true;
     }
   }
+  // to dexpand the widgets once X is clicked 
+
   void dexpandButton() {
     int targetSizex = 20;
     int targetSizey = 20;

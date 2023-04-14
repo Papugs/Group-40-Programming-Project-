@@ -20,7 +20,7 @@ class DataList { //<>//
       println(dp.toString());
     }
   }
-  public ArrayList displayAll() {
+  public ArrayList displayAll() {               // created by palak and used in USA MAP 
     ArrayList<String> result = new ArrayList<String>();
     for (DataPoint dp : datapointlist) {
       result.add(dp.toString());
@@ -119,8 +119,8 @@ class DataList { //<>//
     }
     return new DataList(carrierFlights);
   }
-  public DataList getFlightByState(String Stateabb) {
-    ArrayList<DataPoint> StateFlights = new ArrayList<DataPoint>();
+  public DataList getFlightByState(String Stateabb) {                // created by palak and used in USA MAP 
+    ArrayList<DataPoint> StateFlights = new ArrayList<DataPoint>();        // a query to get information on flights based on their state abbrevations 
     Stateabb = " " + Stateabb + "\"";
     for (DataPoint dp : datapointlist) {
       if (dp.getData(5).compareTo(Stateabb) == 0) {
