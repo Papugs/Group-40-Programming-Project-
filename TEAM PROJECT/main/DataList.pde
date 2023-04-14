@@ -1,4 +1,4 @@
-class DataList { //<>//
+class DataList { //<>// //<>//
   ArrayList<DataPoint> datapointlist;
 
   public DataList() {
@@ -20,7 +20,7 @@ class DataList { //<>//
       println(dp.toString());
     }
   }
-  public ArrayList displayAll() {
+  public ArrayList displayAll() {      // made by palak 
     ArrayList<String> result = new ArrayList<String>();
     for (DataPoint dp : datapointlist) {
       result.add(dp.toString());
@@ -118,8 +118,8 @@ class DataList { //<>//
       }
     }
     return new DataList(carrierFlights);
-  }
-  public DataList getFlightByState(String Stateabb) {
+  } 
+  public DataList getFlightByState(String Stateabb) {    // made by palak 
     ArrayList<DataPoint> StateFlights = new ArrayList<DataPoint>();
     Stateabb = " " + Stateabb + "\"";
     for (DataPoint dp : datapointlist) {

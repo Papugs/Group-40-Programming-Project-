@@ -20,7 +20,7 @@ DateRange dateRange;
 int screen;
 int hoverCheck = 0;
 BarCharts bg;
-USA_MAP usamap;
+USA_MAP usamap; 
 color black = color (0, 0, 0);
 color white = color (255, 255, 255);
 color peach = color (255, 218, 185);

@@ -1,3 +1,4 @@
+// made by palak 
 public class USA_MAP {
   int originalx;
   int originaly;
@@ -21,10 +22,9 @@ public class USA_MAP {
   int offset;
   int[] offsets;
   float mouse;
+// declared variables 
 
-
-
-  public USA_MAP() {
+  public USA_MAP() { // defined everything in constructor and made instances  
     sizex=20;
     sizey=20;
     r = new ArrayList<String>();
@@ -48,7 +48,7 @@ public class USA_MAP {
   }
 
 
-  void draw() {
+  void draw() { // map, widgets drawn
     image(map, 100, 100, SCREENX/2+200, SCREENY/2+200);
     fill(255, 0, 0, 100);
 
@@ -97,7 +97,7 @@ public class USA_MAP {
     }
   }
 
-  void mousePressed() {
+  void mousePressed() { // widget if pressed 
     println(mouseX, mouseY);
     int event = 0;
     first = true;
@@ -133,7 +133,7 @@ public class USA_MAP {
 
 
 
-  void expandButton() {
+  void expandButton() {// expanding if widget pressed 
     sizex = int(buttonlist.get(indexButton).width);
     sizey = int(buttonlist.get(indexButton).height);
     if (buttonlist.get(indexButton).x > 0) buttonlist.get(indexButton).x -= 10;
@@ -146,7 +146,7 @@ public class USA_MAP {
       show= true;
     }
   }
-  void dexpandButton() {
+  void dexpandButton() {  // dexpanding if X pressed  
     int targetSizex = 20;
     int targetSizey = 20;
 
